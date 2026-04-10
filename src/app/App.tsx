@@ -3,6 +3,7 @@ import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Gri
 import { useRef, useState } from "react";
 import meicanLogo from "../assets/meican-logo.png";
 import heroImage from "../assets/hero-image.png";
+import MarqueeLogos from "./components/MarqueeLogos";
 
 export default function App() {
   const productsRef = useRef<HTMLDivElement>(null);
@@ -100,11 +101,11 @@ export default function App() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-[#E9ECEF]"
+        className="bg-white/90 backdrop-blur-md fixed inset-x-0 top-0 z-50 border-b border-[#E9ECEF]"
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src={meicanLogo} alt="Meican Limited" className="h-12 w-12 object-contain" />
+            <img src={meicanLogo} alt="Meican Limited" className="h-14 w-14 object-contain" />
             <div className="font-semibold text-[#1E3A5F] text-lg tracking-tight">MEICAN LIMITED</div>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm">
@@ -117,6 +118,8 @@ export default function App() {
           </div>
         </div>
       </motion.nav>
+
+      <div className="h-24" />
 
       {/* Hero Section */}
       <section className="relative min-h-[calc(100vh-80px)] flex items-center overflow-hidden bg-white">
@@ -176,6 +179,9 @@ export default function App() {
           </motion.div>
         </div>
       </section>
+
+      {/* Client Logos Marquee */}
+      <MarqueeLogos />
 
       {/* Featured Products Slider */}
       <section id="products" className="py-20 bg-[#F8F9FA]">
