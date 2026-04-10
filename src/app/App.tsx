@@ -180,9 +180,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Client Logos Marquee */}
-      <MarqueeLogos />
-
       {/* Featured Products Slider */}
       <section id="products" className="py-20 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-6">
@@ -355,6 +352,9 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* Client Logos Marquee */}
+      <MarqueeLogos />
 
       {/* Contact Section */}
       <section id="contact" className="py-20 bg-white">
