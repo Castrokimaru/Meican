@@ -1,0 +1,735 @@
+{
+  "metadata": {
+    "company": "Sika Kenya Limited",
+    "effective_date": "2026-04-01",
+    "currency": "KES",
+    "terms": "Excludes VAT and delivery"
+  },
+  "categories": [
+    {
+      "id": "concrete-admixtures",
+      "name": "Concrete Admixtures",
+      "url": "/products/concrete-admixtures",
+      "description": "High-performance concrete admixtures for enhanced workability and strength",
+      "icon": "droplet",
+      "color": "bg-blue-50",
+      "featured": true,
+      "items": [
+        {
+          "id": "sika-plastiment-40-ke-5l",
+          "name": "Sika Plastiment-40 KE (5 L)",
+          "sku": "678181",
+          "status": "stock",
+          "uom": "5 L",
+          "price": 1080.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Water-reducing plasticizer for improved concrete workability",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-plastiment-40-ke-25l",
+          "name": "Sika Plastiment-40 KE (25 L)",
+          "sku": "678180",
+          "status": "stock",
+          "uom": "25 L",
+          "price": 5150.00,
+          "image_url": "https://5.imimg.com/data5/SELLER/Default/2023/11/361715695/UE/ZC/RE/185359811/sika-plastiment-bv-40-1000x1000.png",
+          "description": "Water-reducing plasticizer for improved concrete workability",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-plastiment-40-ke-200l",
+          "name": "Sika Plastiment-40 KE (200 L)",
+          "sku": "678179",
+          "status": "stock",
+          "uom": "200 L",
+          "price": 37650.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Water-reducing plasticizer for improved concrete workability",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-plastiment-40-ke-1000l",
+          "name": "Sika Plastiment-40 KE (1000 L)",
+          "sku": "678178",
+          "status": "stock",
+          "uom": "1000 L",
+          "price": 140250.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Water-reducing plasticizer for improved concrete workability",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-plastocrete-n-1kg",
+          "name": "Sika Plastocrete N (1 KG)",
+          "sku": "804877",
+          "status": "order",
+          "uom": "1 KG",
+          "price": 210.00,
+          "image_url": "/assets/Sikalite 1kg.png",
+          "description": "Superplasticizer for high-strength concrete",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-plastocrete-n-5l",
+          "name": "Sika Plastocrete N (5 L)",
+          "sku": "527115",
+          "status": "stock",
+          "uom": "5 L",
+          "price": 867.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Superplasticizer for high-strength concrete",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-plastocrete-n-25l",
+          "name": "Sika Plastocrete N (25 L)",
+          "sku": "527114",
+          "status": "stock",
+          "uom": "25 L",
+          "price": 4280.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Superplasticizer for high-strength concrete",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-plastocrete-n-200l",
+          "name": "Sika Plastocrete N (200 L)",
+          "sku": "527113",
+          "status": "stock",
+          "uom": "200 L",
+          "price": 32850.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Superplasticizer for high-strength concrete",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-plastocrete-n-1000l",
+          "name": "Sika Plastocrete N (1000 L)",
+          "sku": "527112",
+          "status": "stock",
+          "uom": "1000 L",
+          "price": 162500.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Superplasticizer for high-strength concrete",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikament-nng-5l",
+          "name": "Sikament NNG (5 L)",
+          "sku": "542375",
+          "status": "stock",
+          "uom": "5 L",
+          "price": 1850.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "New generation superplasticizer for concrete",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikament-nng-25l",
+          "name": "Sikament NNG (25 L)",
+          "sku": "542374",
+          "status": "stock",
+          "uom": "25 L",
+          "price": 8500.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "New generation superplasticizer for concrete",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikament-nng-200l",
+          "name": "Sikament NNG (200 L)",
+          "sku": "542373",
+          "status": "stock",
+          "uom": "200 L",
+          "price": 65000.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "New generation superplasticizer for concrete",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikament-nng-1000l",
+          "name": "Sikament NNG (1000 L)",
+          "sku": "541948",
+          "status": "stock",
+          "uom": "1000 L",
+          "price": 281000.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "New generation superplasticizer for concrete",
+          "tags": ["exclusive vat"]
+        }
+      ]
+    },
+    {
+      "id": "concrete-essentials",
+      "name": "Concrete Essentials",
+      "url": "/products/concrete-essentials",
+      "description": "Essential products for concrete forming and reinforcement",
+      "icon": "package",
+      "color": "bg-orange-50",
+      "featured": true,
+      "items": [
+        {
+          "id": "sikaform-oil-5l",
+          "name": "SikaForm Oil (5 L)",
+          "sku": "834005",
+          "status": "stock",
+          "uom": "5 L",
+          "price": 1700.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Release agent for concrete formwork",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaform-oil-25l",
+          "name": "SikaForm Oil (25 L)",
+          "sku": "834004",
+          "status": "stock",
+          "uom": "25 L",
+          "price": 7800.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Release agent for concrete formwork",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaform-oil-200l",
+          "name": "SikaForm Oil (200 L)",
+          "sku": "834003",
+          "status": "stock",
+          "uom": "200 L",
+          "price": 61000.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Release agent for concrete formwork",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaform-oil-1000l",
+          "name": "SikaForm Oil (1000 L)",
+          "sku": "834002",
+          "status": "stock",
+          "uom": "1000 L",
+          "price": 270000.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Release agent for concrete formwork",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-fiber-12mm",
+          "name": "Sika Fiber 12mm (0.9 kg)",
+          "sku": "448366",
+          "status": "stock",
+          "uom": "0.9 KG",
+          "price": 595.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Polypropylene fibers for concrete reinforcement",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-fiber-18mm",
+          "name": "Sika Fiber 18mm (0.9 kg)",
+          "sku": "649449",
+          "status": "stock",
+          "uom": "0.9 KG",
+          "price": 610.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Polypropylene fibers for concrete reinforcement",
+          "tags": ["exclusive vat"]
+        }
+      ]
+    },
+    {
+      "id": "waterproofing",
+      "name": "Waterproofing",
+      "url": "/products/waterproofing",
+      "description": "Complete waterproofing systems for basements, roofs, and wet areas",
+      "icon": "shield",
+      "color": "bg-blue-50",
+      "featured": true,
+      "items": [
+        {
+          "id": "sika-cemflex-ke-5l",
+          "name": "Sika Cemflex KE (5 L)",
+          "sku": "525495",
+          "status": "stock",
+          "uom": "5 L",
+          "price": 5250.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Flexible cementitious waterproofing membrane",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-cemflex-ke-25l",
+          "name": "Sika Cemflex KE (25 L)",
+          "sku": "525510",
+          "status": "stock",
+          "uom": "25 L",
+          "price": 24600.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Flexible cementitious waterproofing membrane",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-cemflex-ke-200l",
+          "name": "Sika Cemflex KE (200 L)",
+          "sku": "525512",
+          "status": "stock",
+          "uom": "200 L",
+          "price": 192550.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Flexible cementitious waterproofing membrane",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-cemflex-ke-1000l",
+          "name": "Sika Cemflex KE (1000 L)",
+          "sku": "525513",
+          "status": "stock",
+          "uom": "1000 L",
+          "price": 882850.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Flexible cementitious waterproofing membrane",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikatop-501-seal",
+          "name": "SikaTop-501 Seal (25 kg)",
+          "sku": "837174",
+          "status": "stock",
+          "uom": "25 KG",
+          "price": 6000.00,
+          "image_url": "/assets/sikatop  seal -107 KE 25kg .png",
+          "description": "Polymer-modified cementitious waterproofing coating",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikatop-105-seal-ke",
+          "name": "SikaTop-105 Seal KE (25 kg)",
+          "sku": "25",
+          "status": "stock",
+          "uom": "KG",
+          "price": 3400.00,
+          "image_url": "/assets/Sikatop - 105 seal KE.png",
+          "description": "Cementitious waterproofing coating",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikashield-p24-mg",
+          "name": "SikaShield P24 MG 4.5kg/m2 (10 m2)",
+          "sku": "683369",
+          "status": "stock",
+          "uom": "ROLL",
+          "price": 6681.00,
+          "image_url": "/assets/Sikashield P24.png",
+          "description": "Pre-applied waterproofing membrane",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikashield-p24-pe",
+          "name": "SikaShield P24 PE 4mm (10 m2)",
+          "sku": "683430",
+          "status": "stock",
+          "uom": "ROLL",
+          "price": 7599.00,
+          "image_url": "/assets/Sikashield P24.png",
+          "description": "Pre-applied waterproofing membrane",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikacontrol-110-wt-25l",
+          "name": "SikaControl-110 WT (25 L)",
+          "sku": "110WT25L",
+          "status": "stock",
+          "uom": "25 L",
+          "price": 8500.00,
+          "image_url": "/assets/sikacontrol-110 WT 25 L.png",
+          "description": "Waterproofing control admixture for concrete structures",
+          "tags": ["exclusive vat"]
+        }
+      ]
+    },
+    {
+      "id": "elastic-sealing-bonding",
+      "name": "Elastic Sealing and Bonding",
+      "url": "/products/elastic-sealing-bonding",
+      "description": "High-performance sealants and adhesives for construction joints",
+      "icon": "lock",
+      "color": "bg-purple-50",
+      "featured": true,
+      "items": [
+        {
+          "id": "sikaflex-11fc-grey-300ml",
+          "name": "Sikaflex-11FC+ grey (300 ml)",
+          "sku": "1032",
+          "status": "stock",
+          "uom": "300 ML",
+          "price": 1070.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Polyurethane sealant for construction joints",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaflex-11fc-purform-grey-600ml",
+          "name": "Sikaflex-11FC Purform grey (600 ml)",
+          "sku": "644642",
+          "status": "stock",
+          "uom": "600 ML",
+          "price": 1560.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Polyurethane sealant for construction joints",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaflex-construction-grey-600ml",
+          "name": "Sikaflex Construction+ grey (600 ml)",
+          "sku": "433201",
+          "status": "stock",
+          "uom": "600 ML",
+          "price": 1310.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Construction sealant for general applications",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaflex-pro-3-purform-grey-600ml",
+          "name": "Sikaflex PRO-3 Purform grey (600 ml)",
+          "sku": "694153",
+          "status": "stock",
+          "uom": "600 ML",
+          "price": 1570.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Professional polyurethane sealant",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaflex-406-kc-10l",
+          "name": "Sikaflex-406 KC (10 L)",
+          "sku": "567912",
+          "status": "stock",
+          "uom": "10 L",
+          "price": 33000.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Joint sealant for movement joints",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaflex-263-black-600ml",
+          "name": "Sikaflex-263 black (600 ml)",
+          "sku": "448198",
+          "status": "stock",
+          "uom": "600 ML",
+          "price": 1915.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Polyurethane sealant for dynamic joints",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaflex-221-white-600ml",
+          "name": "Sikaflex 221 white (600 ml)",
+          "sku": "32496",
+          "status": "stock",
+          "uom": "600 ML",
+          "price": 1570.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Universal sealant for general applications",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaflex-221-black-600ml",
+          "name": "Sikaflex 221 black (600 ml)",
+          "sku": "46870",
+          "status": "stock",
+          "uom": "600 ML",
+          "price": 1570.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Universal sealant for general applications",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaboom-p-750ml",
+          "name": "SikaBoom P (750 ml)",
+          "sku": "629636",
+          "status": "stock",
+          "uom": "750 ML",
+          "price": 900.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Expanding foam sealant for gap filling",
+          "tags": ["exclusive vat"]
+        }
+      ]
+    },
+    {
+      "id": "tiling-products",
+      "name": "Tiling Products",
+      "url": "/products/tiling-products",
+      "description": "Professional tile adhesives, grouts, and installation systems",
+      "icon": "grid-3x3",
+      "color": "bg-orange-50",
+      "featured": true,
+      "items": [
+        {
+          "id": "sikaceram-205-white-25kg",
+          "name": "SikaCeram-205 white (25 kg)",
+          "sku": "524738",
+          "status": "stock",
+          "uom": "25 KG",
+          "price": 1510.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "White tile adhesive for walls and floors",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaceram-80-ceramic-20kg",
+          "name": "SikaCeram-80 Ceramic (20 kg)",
+          "sku": "789710",
+          "status": "stock",
+          "uom": "20 KG",
+          "price": 640.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Tile adhesive for ceramic tiles",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaceram-105-porcelain-20kg",
+          "name": "SikaCeram-105 Porcelain (20 kg)",
+          "sku": "789653",
+          "status": "stock",
+          "uom": "20 KG",
+          "price": 930.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Tile adhesive for porcelain and ceramic tiles",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaceram-205-granite-20kg",
+          "name": "SikaCeram-205 Granite (20 kg)",
+          "sku": "789636",
+          "status": "stock",
+          "uom": "20 KG",
+          "price": 1185.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Tile adhesive for granite and natural stone",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaceram-650-tile-grout-ke-3kg-beige",
+          "name": "SikaCeram-650 Tile Grout KE (3 kg) beige",
+          "sku": "812454",
+          "status": "stock",
+          "uom": "3 KG",
+          "price": 310.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Cementitious tile grout in beige",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaceram-650-tile-grout-ke-3kg-ivory",
+          "name": "SikaCeram-650 Tile Grout KE (3 kg) ivory",
+          "sku": "812456",
+          "status": "stock",
+          "uom": "3 KG",
+          "price": 310.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Cementitious tile grout in ivory",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaceram-650-tile-grout-ke-3kg-white",
+          "name": "SikaCeram-650 Tile Grout KE (3 kg) white",
+          "sku": "812216",
+          "status": "stock",
+          "uom": "3 KG",
+          "price": 310.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Cementitious tile grout in white",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaceram-650-tile-grout-ke-3kg-brown",
+          "name": "SikaCeram-650 Tile Grout KE (3 kg) brown",
+          "sku": "812457",
+          "status": "stock",
+          "uom": "3 KG",
+          "price": 310.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Cementitious tile grout in brown",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaceram-650-tile-grout-ke-3kg-grey",
+          "name": "SikaCeram-650 Tile Grout KE (3 kg) grey",
+          "sku": "812215",
+          "status": "stock",
+          "uom": "3 KG",
+          "price": 260.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Cementitious tile grout in grey",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikaceram-650-tile-grout-ke-3kg-black",
+          "name": "SikaCeram-650 Tile Grout KE (3 kg) black",
+          "sku": "812455",
+          "status": "stock",
+          "uom": "3 KG",
+          "price": 400.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Cementitious tile grout in black",
+          "tags": ["exclusive vat"]
+        }
+      ]
+    },
+    {
+      "id": "flooring-systems",
+      "name": "Flooring Systems",
+      "url": "/products/flooring-systems",
+      "description": "Industrial and commercial flooring solutions",
+      "icon": "layers",
+      "color": "bg-green-50",
+      "featured": true,
+      "items": [
+        {
+          "id": "sikafloor-3-quartz-top-grey-25kg",
+          "name": "Sikafloor-3 Quartz Top Grey (25kg)",
+          "sku": "525023",
+          "status": "stock",
+          "uom": "25 KG",
+          "price": 1205.00,
+          "image_url": "/assets/Sikafloor -3.png",
+          "description": "Quartz decorative floor topping",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikadur-508-25kg",
+          "name": "Sikadur-508 (25kg) 0.1-0.3 mm",
+          "sku": "555067",
+          "status": "stock",
+          "uom": "25 KG",
+          "price": 1350.00,
+          "image_url": "/assets/Sikadur - 31 CF  slow comp A -0.8kg .png",
+          "description": "Epoxy flooring system",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikadur-507-ms-25kg",
+          "name": "Sikadur-507 MS (25kg) 0.3-0.7 mm",
+          "sku": "665616",
+          "status": "stock",
+          "uom": "25 KG",
+          "price": 1250.00,
+          "image_url": "/assets/Sikadur - 31 CF  slow comp A -0.8kg .png",
+          "description": "Epoxy flooring system",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikalastic-560-gcc-grey-20kg",
+          "name": "Sikalastic 560 GCC grey (20 kg)",
+          "sku": "502449",
+          "status": "order",
+          "uom": "20 KG",
+          "price": 32000.00,
+          "image_url": "/assets/Sikadur - 31 CF  slow comp A -0.8kg .png",
+          "description": "Polyurethane flooring system",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sikalastic-560-gcc-white-20kg",
+          "name": "Sikalastic 560 GCC white (20 kg)",
+          "sku": "445818",
+          "status": "order",
+          "uom": "20 KG",
+          "price": 32000.00,
+          "image_url": "/assets/Sikadur - 31 CF  slow comp A -0.8kg .png",
+          "description": "Polyurethane flooring system",
+          "tags": ["exclusive vat"]
+        }
+      ]
+    },
+    {
+      "id": "grouts-anchors",
+      "name": "Grouts & Anchors",
+      "url": "/products/grouts-anchors",
+      "description": "High-strength grouts and anchoring systems",
+      "icon": "package",
+      "color": "bg-gray-50",
+      "featured": false,
+      "items": [
+        {
+          "id": "sika-grout-212-25kg",
+          "name": "Sika Grout 212 (25 kg)",
+          "sku": "524880",
+          "status": "stock",
+          "uom": "25 KG",
+          "price": 1759.50,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Non-shrink cementitious grout",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-grout-217-25kg",
+          "sku": "812368",
+          "status": "order",
+          "uom": "25 KG",
+          "price": 5334.60,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "High-strength non-shrink grout",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-anchorfix-1-300ml",
+          "name": "Sika Anchorfix-1 (300 ml)",
+          "sku": "517354",
+          "status": "order",
+          "uom": "300 ML",
+          "price": 2230.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Chemical anchor for rebar and threaded rods",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-anchorfix-3001-250ml",
+          "name": "Sika Anchorfix-3001 (250 ml)",
+          "sku": "673314",
+          "status": "order",
+          "uom": "250 ML",
+          "price": 3285.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Chemical anchor for heavy-duty applications",
+          "tags": ["exclusive vat"]
+        }
+      ]
+    },
+    {
+      "id": "injection-systems",
+      "name": "Injection Systems",
+      "url": "/products/injection-systems",
+      "description": "Structural injection and repair systems",
+      "icon": "droplet",
+      "color": "bg-red-50",
+      "featured": false,
+      "items": [
+        {
+          "id": "sika-injection-107-5.3kg",
+          "name": "Sika Injection-107 (5.3 kg)",
+          "sku": "531919",
+          "status": "order",
+          "uom": "5.3 KG",
+          "price": 39000.00,
+          "image_url": "/assets/sikacontrol-110WT 5L.png",
+          "description": "Polyurethane injection resin for crack sealing",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-injection-107-10.6kg",
+          "name": "Sika Injection-107 (10.6 kg)",
+          "sku": "513424",
+          "status": "order",
+          "uom": "10.6 KG",
+          "price": 70000.00,
+          "image_url": "https://ken.sika.com/content/dam/dms/ke01/513424.jpg",
+          "description": "Polyurethane injection resin for crack sealing",
+          "tags": ["exclusive vat"]
+        }
+      ]
+    }
+  ]
+}
