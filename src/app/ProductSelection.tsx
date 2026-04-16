@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Package, ChevronRight, Check, X, ArrowLeft } from 'lucide-react';
+import { Package, ChevronRight, Check, X, ArrowLeft, Droplet, Weight, Zap, Shield, FileText, Download, MapPin } from 'lucide-react';
 import productsData from '../data/products.json';
 
 interface ProductSelectionProps {
@@ -156,28 +156,80 @@ export default function ProductSelection({ onClose }: ProductSelectionProps) {
                       }`}
                       onClick={() => toggleProductSelection(product.id)}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3">
-                            <h4 className="font-bold text-[#212529] text-lg">{product.name}</h4>
-                            <div className="flex items-center gap-2">
-                              <motion.div
-                                className="w-2 h-2 bg-green-500 rounded-full"
-                                animate={{ 
-                                  scale: [1, 1.2, 1],
-                                  opacity: [1, 0.8, 1]
-                                }}
-                                transition={{ 
-                                  duration: 2, 
-                                  repeat: Infinity 
-                                }}
-                              />
-                              <span className="text-xs text-green-600 font-medium">Current Effect: Active Performance</span>
-                            </div>
-                          </div>
-                          <p className="text-sm text-[#6C757D] mb-2">{product.description}</p>
+                      <div className="flex items-start gap-4">
+                        {/* Product Image */}
+                        <div className="w-20 h-20 bg-[#F8F9FA] rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          <img 
+                            src={product.image_url} 
+                            alt={product.name}
+                            className="w-full h-full object-contain p-2"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/assets/meican-logo.png';
+                            }}
+                          />
                         </div>
-                        <div className="flex items-center gap-4">
+                        
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-bold text-[#212529] text-lg">{product.name}</h4>
+                            {/* Material State Icon */}
+                            {product.status_icon === 'droplet' ? (
+                              <div className="flex items-center gap-1 px-2 py-1 bg-blue-50 rounded-full">
+                                <Droplet className="w-3 h-3 text-blue-500" />
+                                <span className="text-xs text-blue-600 font-medium">Waterproof</span>
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-1 px-2 py-1 bg-green-50 rounded-full">
+                                <Weight className="w-3 h-3 text-green-500" />
+                                <span className="text-xs text-green-600 font-medium">High-Strength</span>
+                              </div>
+                            )}
+                          </div>
+                          
+                          <p className="text-sm text-[#6C757D] mb-2">{product.description}</p>
+                          
+                          {/* Technical Specs */}
+                          {product.specs && (
+                            <div className="flex flex-wrap gap-2 mb-2">
+                              <span className="text-xs px-2 py-1 bg-[#F8F9FA] rounded text-[#6C757D]">
+                                Coverage: {product.specs.coverage}
+                              </span>
+                              <span className="text-xs px-2 py-1 bg-[#F8F9FA] rounded text-[#6C757D]">
+                                Cure: {product.specs.curing_time}
+                              </span>
+                              <span className="text-xs px-2 py-1 bg-[#F8F9FA] rounded text-[#6C757D]">
+                                Grade: {product.specs.waterproofing_grade || product.specs.compressive_strength}
+                              </span>
+                            </div>
+                          )}
+                          
+                          {/* Application Areas */}
+                          {product.application_areas && (
+                            <div className="flex items-center gap-1 mb-2">
+                              <MapPin className="w-3 h-3 text-[#6C757D]" />
+                              <span className="text-xs text-[#6C757D]">
+                                Best for: {product.application_areas.slice(0, 2).join(', ')}
+                              </span>
+                            </div>
+                          )}
+                          
+                          {/* PDF Download */}
+                          {product.datasheet_url && (
+                            <a
+                              href={product.datasheet_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs text-[#1E5BA8] hover:text-[#1a4d8f] transition-colors"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <FileText className="w-3 h-3" />
+                              <span>Download Data Sheet</span>
+                              <Download className="w-3 h-3" />
+                            </a>
+                          )}
+                        </div>
+                        
+                        <div className="flex flex-col items-end gap-2">
                           <div className="text-right">
                             <div className="text-lg font-bold text-green-600">KES {product.price.toLocaleString()}</div>
                             <div className="text-xs text-[#6C757D]">{product.uom}</div>
@@ -234,28 +286,73 @@ export default function ProductSelection({ onClose }: ProductSelectionProps) {
                       }`}
                       onClick={() => toggleProductSelection(product.id)}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3">
+                      <div className="flex items-start gap-4">
+                        {/* Product Image */}
+                        <div className="w-20 h-20 bg-[#F8F9FA] rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          <img 
+                            src={product.image_url} 
+                            alt={product.name}
+                            className="w-full h-full object-contain p-2"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/assets/meican-logo.png';
+                            }}
+                          />
+                        </div>
+                        
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
                             <h4 className="font-bold text-[#212529] text-lg">{product.name}</h4>
-                            <div className="flex items-center gap-2">
-                              <motion.div
-                                className="w-2 h-2 bg-blue-500 rounded-full"
-                                animate={{ 
-                                  scale: [1, 1.2, 1],
-                                  opacity: [1, 0.8, 1]
-                                }}
-                                transition={{ 
-                                  duration: 2, 
-                                  repeat: Infinity 
-                                }}
-                              />
-                              <span className="text-xs text-blue-600 font-medium">Current Effect: Active Protection</span>
+                            {/* Material State Icon - Always show waterproof for waterproofing */}
+                            <div className="flex items-center gap-1 px-2 py-1 bg-blue-50 rounded-full">
+                              <Droplet className="w-3 h-3 text-blue-500" />
+                              <span className="text-xs text-blue-600 font-medium">Waterproof</span>
                             </div>
                           </div>
+                          
                           <p className="text-sm text-[#6C757D] mb-2">{product.description}</p>
+                          
+                          {/* Technical Specs */}
+                          {product.specs && (
+                            <div className="flex flex-wrap gap-2 mb-2">
+                              <span className="text-xs px-2 py-1 bg-[#F8F9FA] rounded text-[#6C757D]">
+                                Coverage: {product.specs.coverage}
+                              </span>
+                              <span className="text-xs px-2 py-1 bg-[#F8F9FA] rounded text-[#6C757D]">
+                                Cure: {product.specs.curing_time}
+                              </span>
+                              <span className="text-xs px-2 py-1 bg-[#F8F9FA] rounded text-[#6C757D]">
+                                Grade: {product.specs.waterproofing_grade || product.specs.compressive_strength}
+                              </span>
+                            </div>
+                          )}
+                          
+                          {/* Application Areas */}
+                          {product.application_areas && (
+                            <div className="flex items-center gap-1 mb-2">
+                              <MapPin className="w-3 h-3 text-[#6C757D]" />
+                              <span className="text-xs text-[#6C757D]">
+                                Best for: {product.application_areas.slice(0, 2).join(', ')}
+                              </span>
+                            </div>
+                          )}
+                          
+                          {/* PDF Download */}
+                          {product.datasheet_url && (
+                            <a
+                              href={product.datasheet_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs text-[#1E5BA8] hover:text-[#1a4d8f] transition-colors"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <FileText className="w-3 h-3" />
+                              <span>Download Data Sheet</span>
+                              <Download className="w-3 h-3" />
+                            </a>
+                          )}
                         </div>
-                        <div className="flex items-center gap-4">
+                        
+                        <div className="flex flex-col items-end gap-2">
                           <div className="text-right">
                             <div className="text-lg font-bold text-blue-600">KES {product.price.toLocaleString()}</div>
                             <div className="text-xs text-[#6C757D]">{product.uom}</div>
