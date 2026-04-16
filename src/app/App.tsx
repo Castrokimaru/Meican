@@ -1,9 +1,10 @@
 import { motion } from "motion/react";
-import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers } from "lucide-react";
+import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers, MessageCircle, FileText, Weight, Zap } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import meicanLogo from "../assets/meican-logo.png";
 import heroImage from "../assets/hero-image.png";
 import MarqueeLogos from "./components/MarqueeLogos";
+import ProductSelection from "./ProductSelection";
 import productsData from "../data/products.json";
 
 export default function App() {
@@ -12,6 +13,8 @@ export default function App() {
   const [expandedProducts, setExpandedProducts] = useState<Set<string>>(new Set());
   const [currentVisibleCategory, setCurrentVisibleCategory] = useState<number>(0);
   const [isSlideshowActive, setIsSlideshowActive] = useState<boolean>(false);
+  const [isSending, setIsSending] = useState<boolean>(false);
+  const [showProductSelection, setShowProductSelection] = useState<boolean>(false);
 
   // Get all products from all categories for the featured products section
   const allProducts = productsData.categories.flatMap(category => 
@@ -22,8 +25,10 @@ export default function App() {
     }))
   );
 
-  // Get featured products by categories (first product from each featured category)
+  // Filter featured categories
   const featuredCategories = productsData.categories.filter(category => category.featured);
+
+  // Create featured products by category for other sections
   const featuredProductsByCategory = featuredCategories.map(category => ({
     category: category,
     products: category.items.slice(0, 3) // Show first 3 products from each featured category
@@ -175,7 +180,7 @@ export default function App() {
         const next = (prev + 1) % featuredProductsByCategory.length;
         return next;
       });
-    }, 4000); // Change category every 4 seconds
+    }, 10000); // Change category every 10 seconds
 
     return () => clearInterval(interval);
   }, [isSlideshowActive, featuredProductsByCategory.length]);
@@ -198,8 +203,12 @@ export default function App() {
             <a href="#products" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Products</a>
             <a href="#categories" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Categories</a>
             <a href="#contact" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Contact</a>
-            <button className="px-6 py-2 bg-[#1E5BA8] text-white rounded-lg hover:bg-[#1a4d8f] transition-all active:scale-95">
-              Shop Now
+            <button 
+              onClick={() => setShowProductSelection(true)}
+              className="px-6 py-2 bg-[#1E5BA8] text-white rounded-lg hover:bg-[#1a4d8f] transition-all active:scale-95 flex items-center gap-2"
+            >
+              <Package className="w-4 h-4" />
+              <span>Select Products</span>
             </button>
           </div>
         </div>
@@ -299,309 +308,72 @@ export default function App() {
               </div>
             )}
 
-            {/* Slideshow Container */}
-            <div className="relative" style={{ minHeight: '600px' }}>
+            {/* Categories Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredProductsByCategory.map((categorySection, categoryIndex) => (
                 <motion.div
                   key={categorySection.category.id}
-                  className="absolute inset-0"
-                  initial={{ opacity: 0, x: categoryIndex === 0 ? 0 : '100%' }}
-                  animate={{
-                    opacity: isSlideshowActive ? (categoryIndex === currentVisibleCategory ? 1 : 0) : (categoryIndex < 3 ? 1 : 0),
-                    x: isSlideshowActive 
-                      ? (categoryIndex === currentVisibleCategory ? 0 : (categoryIndex < currentVisibleCategory ? '-100%' : '100%'))
-                      : (categoryIndex < 3 ? 0 : '100%'),
-                    display: isSlideshowActive 
-                      ? (categoryIndex === currentVisibleCategory ? 'block' : 'none')
-                      : (categoryIndex < 3 ? 'block' : 'none')
-                  }}
-                  transition={{
-                    duration: 1.2,
-                    ease: [0.4, 0, 0.2, 1],
-                    opacity: { duration: 0.6 },
-                    x: { duration: 1.2 }
-                  }}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: categoryIndex * 0.15 }}
+                  className="bg-white rounded-2xl shadow-lg overflow-hidden border border-[#E9ECEF] hover:shadow-xl transition-shadow"
                 >
-                  {/* Category Header */}
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className={`w-12 h-12 ${categorySection.category.color} rounded-xl flex items-center justify-center`}>
-                      <categorySection.category.icon className="w-6 h-6 text-[#1E5BA8]" />
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${categorySection.category.color}`}>
+                        <categorySection.category.icon className="w-5 h-5 text-[#1E5BA8]" />
+                      </div>
+                      <h3 className="font-semibold text-[#212529]">{categorySection.category.name}</h3>
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-[#212529]">{categorySection.category.name}</h3>
-                      <p className="text-[#6C757D]">{categorySection.category.description}</p>
-                    </div>
-                    <button
-                      onClick={() => window.open(categorySection.category.url, '_blank')}
-                      className="ml-auto px-4 py-2 text-[#1E5BA8] hover:bg-[#1E5BA8]/10 rounded-lg transition-colors flex items-center gap-2"
-                    >
-                      View All ({categorySection.category.items.length})
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  {/* Products Grid */}
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {categorySection.products.map((product, productIndex) => (
-                      <motion.div
-                        key={product.id}
-                        initial={{ opacity: 0, x: productIndex % 2 === 0 ? -50 : 50, y: 30 }}
-                        whileInView={{ opacity: 1, x: 0, y: 0 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                        transition={{ 
-                          duration: 0.6, 
-                          delay: productIndex * 0.15,
-                          type: "spring",
-                          stiffness: 100,
-                          damping: 15
-                        }}
-                        whileHover={{ 
-                          scale: 1.02,
-                          transition: { duration: 0.3 }
-                        }}
-                        className="group"
-                      >
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 h-full hover:-translate-y-3 relative">
-                          <motion.div 
-                            className="aspect-video overflow-hidden relative"
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 0.4 }}
-                          >
-                            <motion.img
-                              src={product.image_url}
-                              alt={product.name}
-                              className="w-full h-full object-cover"
-                              initial={{ scale: 1 }}
-                              whileHover={{ scale: 1.1 }}
-                              transition={{ duration: 0.6 }}
-                            />
-                          </motion.div>
-                          <div className="p-6">
-                            {/* Product Tags */}
-                            <div className="flex items-center gap-2 mb-3">
-                              {product.tags?.includes('exclusive vat') && (
-                                <span className="text-xs px-2 py-1 bg-red-50 text-red-600 font-medium rounded-full">
-                                  VAT Exclusive
-                                </span>
-                              )}
-                              <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                                product.status === 'stock' 
-                                  ? 'bg-green-50 text-green-600' 
-                                  : 'bg-orange-50 text-orange-600'
-                              }`}>
-                                {product.status === 'stock' ? 'In Stock' : 'Order'}
-                              </span>
-                            </div>
-
-                            <h4 className="text-lg font-semibold text-[#212529] mb-2">{product.name}</h4>
-                            <p className="text-sm text-[#6C757D] mb-4">{product.description}</p>
-
-                            {/* Product Details Button */}
-                            <motion.button
-                              onClick={() => toggleProductExpansion(product.id)}
-                              className="w-full flex items-center justify-between gap-2 px-3 py-2 bg-[#F8F9FA] hover:bg-[#E9ECEF] rounded-lg transition-colors group mb-4"
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              <div className="flex items-center gap-2">
-                                <div className="w-4 h-4 bg-[#1E5BA8]/10 rounded-full flex items-center justify-center">
-                                  <div className="w-1.5 h-1.5 bg-[#1E5BA8] rounded-full"></div>
-                                </div>
-                                <span className="text-sm font-medium text-[#212529]">Product Details & Benefits</span>
-                              </div>
-                              <ChevronRight className={`w-4 h-4 text-[#6C757D] transition-transform duration-200 ${
-                                expandedProducts.has(product.id) ? 'rotate-90' : ''
-                              }`} />
-                            </motion.button>
-
-                            <div className="space-y-2 mb-4">
-                              <div className="flex justify-between items-center text-sm py-2 px-3 bg-[#F8F9FA] rounded-lg">
-                                <span className="text-[#6C757D]">SKU</span>
-                                <span className="font-mono text-xs text-[#212529]">{product.sku}</span>
-                              </div>
-                              <div className="flex justify-between items-center text-sm py-2 px-3 bg-[#F8F9FA] rounded-lg">
-                                <span className="text-[#6C757D]">Unit</span>
-                                <span className="font-semibold text-[#212529]">{product.uom}</span>
-                              </div>
-                              <div className="flex justify-between items-center text-sm py-2 px-3 bg-[#F8F9FA] rounded-lg">
-                                <span className="text-[#6C757D]">Price</span>
-                                <span className="font-semibold text-[#212529]">KES {product.price.toLocaleString()}</span>
-                              </div>
-                            </div>
-
-                            <motion.button 
-                              className="w-full py-3 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all flex items-center justify-center gap-2"
-                              whileHover={{ scale: 1.02, y: -2 }}
-                              whileTap={{ scale: 0.98 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              <Package className="w-4 h-4" />
-                              Add to Cart
-                            </motion.button>
+                    
+                    <div className="space-y-3">
+                      {categorySection.products.map((product) => (
+                        <motion.div
+                          key={product.id}
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.3 }}
+                          className="flex items-center gap-3 p-3 bg-[#F8F9FA] rounded-lg group cursor-pointer hover:bg-[#E9ECEF] transition-colors"
+                          onClick={() => toggleProductExpansion(product.id)}
+                        >
+                          <img 
+                            src={product.image_url} 
+                            alt={product.name}
+                            className="w-12 h-12 object-cover rounded-lg"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-sm text-[#212529] truncate">{product.name}</div>
+                            <div className="text-xs text-[#6C757D]">KES {product.price.toLocaleString()}</div>
                           </div>
-
-                          {/* Overlay Marketing Sections */}
-                          {expandedProducts.has(product.id) && (
-                            <>
-                              {/* Backdrop */}
-                              <motion.div 
-                                className="absolute inset-0 bg-black/50 rounded-2xl z-10"
-                                onClick={() => toggleProductExpansion(product.id)}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.3 }}
-                              />
-                              
-                              {/* Content Overlay */}
-                              <motion.div 
-                                className="absolute inset-0 bg-white rounded-2xl p-6 z-20 overflow-y-auto"
-                                initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                                animate={{ scale: 1, opacity: 1, y: 0 }}
-                                exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                                transition={{ 
-                                  duration: 0.4,
-                                  type: "spring",
-                                  stiffness: 300,
-                                  damping: 25
-                                }}
-                              >
-                                <div className="flex items-center justify-between mb-4">
-                                  <h3 className="text-lg font-semibold text-[#212529]">{product.name}</h3>
-                                  <motion.button
-                                    onClick={() => toggleProductExpansion(product.id)}
-                                    className="w-8 h-8 bg-[#F8F9FA] hover:bg-[#E9ECEF] rounded-full flex items-center justify-center transition-colors"
-                                    whileHover={{ scale: 1.1, rotate: 90 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    transition={{ duration: 0.2 }}
-                                  >
-                                    <motion.div
-                                      initial={{ rotate: 0 }}
-                                      animate={{ rotate: 90 }}
-                                      transition={{ duration: 0.3 }}
-                                    >
-                                      <ChevronRight className="w-4 h-4 text-[#6C757D]" />
-                                    </motion.div>
-                                  </motion.button>
-                                </div>
-
-                                <div className="space-y-4">
-                                  {/* Marketing Section - How It Works */}
-                                  <div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                      <div className="w-5 h-5 bg-[#1E5BA8]/10 rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-[#1E5BA8] rounded-full"></div>
-                                      </div>
-                                      <h5 className="text-sm font-semibold text-[#212529]">How It Works</h5>
-                                    </div>
-                                    <p className="text-xs text-[#6C757D] leading-relaxed">
-                                      {getProductHowItWorks(product, categorySection.category.id)}
-                                    </p>
-                                  </div>
-
-                                  {/* Marketing Section - Key Benefits */}
-                                  <div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                      <div className="w-5 h-5 bg-green-50 rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                      </div>
-                                      <h5 className="text-sm font-semibold text-[#212529]">Key Benefits</h5>
-                                    </div>
-                                    <ul className="text-xs text-[#6C757D] space-y-1">
-                                      {getProductBenefits(product, categorySection.category.id).map((benefit: string, index: number) => (
-                                        <li key={index} className="flex items-start gap-2">
-                                          <span className="text-green-500 mt-0.5">•</span>
-                                          <span>{benefit}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-
-                                  {/* Marketing Section - Application */}
-                                  <div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                      <div className="w-5 h-5 bg-orange-50 rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                                      </div>
-                                      <h5 className="text-sm font-semibold text-[#212529]">Best For</h5>
-                                    </div>
-                                    <p className="text-xs text-[#6C757D] leading-relaxed">
-                                      {getProductApplication(product, categorySection.category.id)}
-                                    </p>
-                                  </div>
-
-                                  {/* Quick Info */}
-                                  <div className="pt-4 border-t border-[#E9ECEF]">
-                                    <div className="grid grid-cols-2 gap-2 text-xs">
-                                      <div className="bg-[#F8F9FA] rounded-lg p-2">
-                                        <span className="text-[#6C757D]">SKU:</span>
-                                        <span className="font-mono text-[#212529] ml-1">{product.sku}</span>
-                                      </div>
-                                      <div className="bg-[#F8F9FA] rounded-lg p-2">
-                                        <span className="text-[#6C757D]">Unit:</span>
-                                        <span className="font-semibold text-[#212529] ml-1">{product.uom}</span>
-                                      </div>
-                                      <div className="bg-[#F8F9FA] rounded-lg p-2 col-span-2">
-                                        <span className="text-[#6C757D]">Price:</span>
-                                        <span className="font-semibold text-[#212529] ml-1">KES {product.price.toLocaleString()}</span>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  {/* Action Button */}
-                                  <motion.button 
-                                    className="w-full py-3 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all flex items-center justify-center gap-2"
-                                    whileHover={{ scale: 1.02, y: -2 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    transition={{ duration: 0.2 }}
-                                  >
-                                    <Package className="w-4 h-4" />
-                                    Add to Cart
-                                  </motion.button>
-                                </div>
-                              </motion.div>
-                            </>
-                          )}
-                        </div>
-                      </motion.div>
-                    ))}
+                          <motion.button 
+                            className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <ChevronRight className={`w-4 h-4 text-[#6C757D] transition-transform duration-200 ${
+                              expandedProducts.has(product.id) ? 'rotate-90' : ''
+                            }`} />
+                          </motion.button>
+                        </motion.div>
+                      ))}
+                    </div>
+                    
+                    <motion.button
+                      onClick={() => setShowProductSelection(true)}
+                      className="w-full mt-4 py-3 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all flex items-center justify-center gap-2"
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Package className="w-4 h-4" />
+                      <span>Select Products</span>
+                    </motion.button>
                   </div>
                 </motion.div>
               ))}
             </div>
-
-            {/* Category Navigation */}
-            {isSlideshowActive && featuredProductsByCategory.length > 1 && (
-              <div className="flex justify-between items-center mt-8">
-                <button
-                  onClick={() => setCurrentVisibleCategory((prev) => 
-                    prev === 0 ? featuredProductsByCategory.length - 1 : prev - 1
-                  )}
-                  className="w-10 h-10 bg-white rounded-full shadow-md hover:shadow-lg transition-all flex items-center justify-center border border-[#E9ECEF]"
-                >
-                  <ChevronRight className="w-5 h-5 rotate-180 text-[#212529]" />
-                </button>
-                
-                <div className="text-center">
-                  <div className="text-sm font-medium text-[#212529]">
-                    {featuredProductsByCategory[currentVisibleCategory]?.category.name}
-                  </div>
-                  <div className="text-xs text-[#6C757D]">
-                    {currentVisibleCategory + 1} of {featuredProductsByCategory.length}
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => setCurrentVisibleCategory((prev) => 
-                    (prev + 1) % featuredProductsByCategory.length
-                  )}
-                  className="w-10 h-10 bg-white rounded-full shadow-md hover:shadow-lg transition-all flex items-center justify-center border border-[#E9ECEF]"
-                >
-                  <ChevronRight className="w-5 h-5 text-[#212529]" />
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </section>
@@ -731,6 +503,27 @@ export default function App() {
           scrollbar-width: none;
         }
       `}</style>
+      {/* Product Selection Modal */}
+      {showProductSelection && (
+        <ProductSelection onClose={() => setShowProductSelection(false)} />
+      )}
+
+      {/* WhatsApp Float Button */}
+      <motion.a
+        href="https://wa.me/254797259150?text=Hi%20Meican%20Limited,%20I%20need%20technical%20recommendation%20for%20my%20construction%20project."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-xl hover:shadow-2xl transition-all flex items-center gap-3 group"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        whileHover={{ scale: 1.05, y: -2 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <MessageCircle className="w-6 h-6" />
+        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap text-sm font-medium">
+          Need technical recommendation?
+        </span>
+      </motion.a>
     </div>
   );
 }
