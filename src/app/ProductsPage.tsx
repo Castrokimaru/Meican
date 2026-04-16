@@ -413,7 +413,12 @@ export default function ProductsPage({ isOpen, onClose, initialCategory = null }
                         {/* Price & Actions */}
                         <div className="flex items-center justify-between pt-3 border-t border-[#E9ECEF]">
                           <div>
-                            <span className="text-xl font-bold text-[#1E5BA8]">KES {product.price.toLocaleString()}</span>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xl font-bold text-[#1E5BA8]">KES {product.price.toLocaleString()}</span>
+                              <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
+                                Excl. VAT
+                              </span>
+                            </div>
                             <span className="text-xs text-[#6C757D] block">{product.uom}</span>
                           </div>
                           <div className="flex items-center gap-2">
