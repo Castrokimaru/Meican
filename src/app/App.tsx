@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers } from "lucide-react";
+import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers, MessageCircle, FileText, Weight, Zap } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import meicanLogo from "../assets/meican-logo.png";
 import heroImage from "../assets/hero-image.png";
@@ -507,6 +507,23 @@ export default function App() {
       {showProductSelection && (
         <ProductSelection onClose={() => setShowProductSelection(false)} />
       )}
+
+      {/* WhatsApp Float Button */}
+      <motion.a
+        href="https://wa.me/254797259150?text=Hi%20Meican%20Limited,%20I%20need%20technical%20recommendation%20for%20my%20construction%20project."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-xl hover:shadow-2xl transition-all flex items-center gap-3 group"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        whileHover={{ scale: 1.05, y: -2 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <MessageCircle className="w-6 h-6" />
+        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap text-sm font-medium">
+          Need technical recommendation?
+        </span>
+      </motion.a>
     </div>
   );
 }
