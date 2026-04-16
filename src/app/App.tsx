@@ -5,6 +5,8 @@ import meicanLogo from "../assets/meican-logo.png";
 import heroImage from "../assets/hero-image.png";
 import MarqueeLogos from "./components/MarqueeLogos";
 import ProductSelection from "./ProductSelection";
+import AboutUs from "./AboutUs";
+import ProductsPage from "./ProductsPage";
 import productsData from "../data/products.json";
 
 export default function App() {
@@ -15,6 +17,9 @@ export default function App() {
   const [isSlideshowActive, setIsSlideshowActive] = useState<boolean>(false);
   const [isSending, setIsSending] = useState<boolean>(false);
   const [showProductSelection, setShowProductSelection] = useState<boolean>(false);
+  const [showAboutUs, setShowAboutUs] = useState<boolean>(false);
+  const [showProductsPage, setShowProductsPage] = useState<boolean>(false);
+  const [selectedProductsCategory, setSelectedProductsCategory] = useState<string | null>(null);
 
   // Get all products from all categories for the featured products section
   const allProducts = productsData.categories.flatMap(category => 
@@ -232,7 +237,13 @@ export default function App() {
               Premium construction solutions from basement to roof. Industrial-grade quality for contractors and DIY enthusiasts.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-8 py-4 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all active:scale-98 shadow-lg shadow-[#1E5BA8]/20 flex items-center justify-center gap-2 group">
+              <button 
+                onClick={() => {
+                  setSelectedProductsCategory(null);
+                  setShowProductsPage(true);
+                }}
+                className="px-8 py-4 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all active:scale-98 shadow-lg shadow-[#1E5BA8]/20 flex items-center justify-center gap-2 group"
+              >
                 Browse Products
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -308,68 +319,185 @@ export default function App() {
               </div>
             )}
 
-            {/* Categories Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Individual Category Sections */}
+            <div className="space-y-16">
               {featuredProductsByCategory.map((categorySection, categoryIndex) => (
                 <motion.div
                   key={categorySection.category.id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: categoryIndex * 0.15 }}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden border border-[#E9ECEF] hover:shadow-xl transition-shadow"
+                  transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
+                  className="bg-white rounded-2xl shadow-lg border border-[#E9ECEF] overflow-hidden"
                 >
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${categorySection.category.color}`}>
-                        <categorySection.category.icon className="w-5 h-5 text-[#1E5BA8]" />
+                  {/* Category Header */}
+                  <div className={`p-6 ${categorySection.category.color} border-b border-[#E9ECEF]`}>
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                        <categorySection.category.icon className="w-7 h-7 text-[#1E5BA8]" />
                       </div>
-                      <h3 className="font-semibold text-[#212529]">{categorySection.category.name}</h3>
+                      <div>
+                        <h3 className="text-2xl font-bold text-[#212529]">{categorySection.category.name}</h3>
+                        <p className="text-[#6C757D] text-sm mt-1">
+                          {categorySection.category.description || `Professional-grade ${categorySection.category.name.toLowerCase()} solutions`}
+                        </p>
+                      </div>
+                      <div className="ml-auto">
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-[#1E5BA8] shadow-sm">
+                          {categorySection.products.length} Products
+                        </span>
+                      </div>
                     </div>
-                    
-                    <div className="space-y-3">
-                      {categorySection.products.map((product) => (
+                  </div>
+                  
+                  {/* Products Grid - Individual Product Cards */}
+                  <div className="p-6">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {categorySection.products.map((product, productIndex) => (
                         <motion.div
                           key={product.id}
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
-                          transition={{ duration: 0.3 }}
-                          className="flex items-center gap-3 p-3 bg-[#F8F9FA] rounded-lg group cursor-pointer hover:bg-[#E9ECEF] transition-colors"
+                          transition={{ duration: 0.4, delay: productIndex * 0.1 }}
+                          className="bg-[#F8F9FA] rounded-xl overflow-hidden border border-[#E9ECEF] hover:shadow-lg transition-all group cursor-pointer"
                           onClick={() => toggleProductExpansion(product.id)}
                         >
-                          <img 
-                            src={product.image_url} 
-                            alt={product.name}
-                            className="w-12 h-12 object-cover rounded-lg"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <div className="font-medium text-sm text-[#212529] truncate">{product.name}</div>
-                            <div className="text-xs text-[#6C757D]">KES {product.price.toLocaleString()}</div>
+                          {/* Product Image - 60% */}
+                          <div className="relative h-48 bg-white p-4 flex items-center justify-center">
+                            <img 
+                              src={product.image_url} 
+                              alt={product.name}
+                              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = '/assets/meican-logo.png';
+                              }}
+                            />
+                            {/* Status Badge */}
+                            <div className="absolute top-3 right-3">
+                              {product.status_icon === 'droplet' ? (
+                                <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full flex items-center gap-1">
+                                  <Droplet className="w-3 h-3" />
+                                  Waterproof
+                                </span>
+                              ) : (
+                                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full flex items-center gap-1">
+                                  <Weight className="w-3 h-3" />
+                                  High-Strength
+                                </span>
+                              )}
+                            </div>
                           </div>
-                          <motion.button 
-                            className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
+                          
+                          {/* Product Info - 40% */}
+                          <div className="p-4">
+                            <h4 className="font-bold text-[#212529] mb-2">{product.name}</h4>
+                            <p className="text-xs text-[#6C757D] mb-3 line-clamp-2">{product.description}</p>
+                            
+                            {/* Quick Specs */}
+                            {product.specs && (
+                              <div className="flex flex-wrap gap-1 mb-3">
+                                <span className="text-xs px-2 py-1 bg-white rounded text-[#6C757D]">
+                                  {product.specs.coverage}
+                                </span>
+                                <span className="text-xs px-2 py-1 bg-white rounded text-[#6C757D]">
+                                  {product.specs.curing_time}
+                                </span>
+                              </div>
+                            )}
+                            
+                            {/* Price & CTA */}
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="text-lg font-bold text-[#1E5BA8]">
+                                  KES {product.price.toLocaleString()}
+                                </span>
+                                <span className="text-xs text-[#6C757D] block">{product.uom}</span>
+                              </div>
+                              <motion.button
+                                className="w-10 h-10 bg-[#1E5BA8] text-white rounded-full flex items-center justify-center shadow-md"
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setShowProductSelection(true);
+                                }}
+                              >
+                                <ChevronRight className="w-5 h-5" />
+                              </motion.button>
+                            </div>
+                          </div>
+                          
+                          {/* Expandable Details */}
+                          <motion.div
+                            initial={false}
+                            animate={{ height: expandedProducts.has(product.id) ? 'auto' : 0, opacity: expandedProducts.has(product.id) ? 1 : 0 }}
+                            className="overflow-hidden bg-white border-t border-[#E9ECEF]"
                           >
-                            <ChevronRight className={`w-4 h-4 text-[#6C757D] transition-transform duration-200 ${
-                              expandedProducts.has(product.id) ? 'rotate-90' : ''
-                            }`} />
-                          </motion.button>
+                            <div className="p-4 space-y-3">
+                              {/* Technical Specs */}
+                              {product.specs && (
+                                <div className="space-y-2">
+                                  <h5 className="text-xs font-semibold text-[#212529] uppercase tracking-wide">
+                                    Technical Specifications
+                                  </h5>
+                                  <div className="grid grid-cols-2 gap-2 text-xs">
+                                    {Object.entries(product.specs).map(([key, value]) => (
+                                      <div key={key} className="flex flex-col">
+                                        <span className="text-[#6C757D] capitalize">{key.replace('_', ' ')}</span>
+                                        <span className="font-medium text-[#212529]">{value as string}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {/* Application Areas */}
+                              {product.application_areas && (
+                                <div className="flex flex-wrap gap-1">
+                                  {product.application_areas.map((area: string) => (
+                                    <span key={area} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
+                                      {area}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                              
+                              {/* Data Sheet Link */}
+                              {product.datasheet_url && (
+                                <a
+                                  href={product.datasheet_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-2 text-xs text-[#1E5BA8] hover:text-[#1a4d8f] transition-colors"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <FileText className="w-4 h-4" />
+                                  <span>Download Technical Data Sheet</span>
+                                </a>
+                              )}
+                            </div>
+                          </motion.div>
                         </motion.div>
                       ))}
                     </div>
                     
-                    <motion.button
-                      onClick={() => setShowProductSelection(true)}
-                      className="w-full mt-4 py-3 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all flex items-center justify-center gap-2"
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Package className="w-4 h-4" />
-                      <span>Select Products</span>
-                    </motion.button>
+                    {/* Category Footer CTA */}
+                    <div className="mt-6 pt-6 border-t border-[#E9ECEF]">
+                      <motion.button
+                        onClick={() => {
+                          setSelectedProductsCategory(categorySection.category.id);
+                          setShowProductsPage(true);
+                        }}
+                        className="w-full py-4 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all flex items-center justify-center gap-3 font-medium"
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
+                      >
+                        <Package className="w-5 h-5" />
+                        <span>View All {categorySection.category.name} Products</span>
+                        <ChevronRight className="w-5 h-5" />
+                      </motion.button>
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -482,13 +610,55 @@ export default function App() {
       {/* Footer */}
       <footer className="bg-[#212529] text-white py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-3">
-              <img src={meicanLogo} alt="Meican Limited" className="h-10 w-10 object-contain brightness-0 invert" />
-              <div className="font-semibold">MEICAN LIMITED</div>
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            {/* Company Info */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <img src={meicanLogo} alt="Meican Limited" className="h-10 w-10 object-contain brightness-0 invert" />
+                <div className="font-semibold">MEICAN LIMITED</div>
+              </div>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                A Kenyan registered company specializing in premium building materials and construction solutions. 
+                Authorized distributor for Sika Kenya Limited.
+              </p>
             </div>
+            
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <div className="space-y-2 text-sm">
+                <button 
+                  onClick={() => setShowAboutUs(true)}
+                  className="block text-gray-400 hover:text-white transition-colors"
+                >
+                  About Us
+                </button>
+                <a href="#products" className="block text-gray-400 hover:text-white transition-colors">
+                  Our Products
+                </a>
+                <a href="#contact" className="block text-gray-400 hover:text-white transition-colors">
+                  Contact
+                </a>
+              </div>
+            </div>
+            
+            {/* Contact Info */}
+            <div>
+              <h4 className="font-semibold mb-4">Contact</h4>
+              <div className="space-y-2 text-sm text-gray-400">
+                <p>Josh Industrial Estate, Athi River</p>
+                <p>+254 700 123 456</p>
+                <p>sales@meican.co.ke</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-gray-400">
-              © 2026 Meican Limited. All rights reserved.
+              © 2026 Meican Limited. All rights reserved. | Registered Company in Kenya
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500">Reg. No: CPR/2014/XYZ123</span>
             </div>
           </div>
         </div>
@@ -507,6 +677,22 @@ export default function App() {
       {showProductSelection && (
         <ProductSelection onClose={() => setShowProductSelection(false)} />
       )}
+
+      {/* About Us Modal */}
+      <AboutUs 
+        isOpen={showAboutUs} 
+        onClose={() => setShowAboutUs(false)} 
+      />
+
+      {/* Products Page */}
+      <ProductsPage
+        isOpen={showProductsPage}
+        onClose={() => {
+          setShowProductsPage(false);
+          setSelectedProductsCategory(null);
+        }}
+        initialCategory={selectedProductsCategory}
+      />
 
       {/* WhatsApp Float Button */}
       <motion.a
