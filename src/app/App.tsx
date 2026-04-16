@@ -1,43 +1,22 @@
 import { motion } from "motion/react";
 import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers, MessageCircle, FileText, Weight, Zap } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import meicanLogo from "../assets/meican-logo.png";
 import heroImage from "../assets/hero-image.png";
 import MarqueeLogos from "./components/MarqueeLogos";
 import ProductSelection from "./ProductSelection";
 import AboutUs from "./AboutUs";
 import ProductsPage from "./ProductsPage";
+import FeaturedProductsShowcase from "./FeaturedProductsShowcase";
 import productsData from "../data/products.json";
 
 export default function App() {
-  const productsRef = useRef<HTMLDivElement>(null);
   const [hoveredContact, setHoveredContact] = useState<string | null>(null);
-  const [expandedProducts, setExpandedProducts] = useState<Set<string>>(new Set());
-  const [currentVisibleCategory, setCurrentVisibleCategory] = useState<number>(0);
-  const [isSlideshowActive, setIsSlideshowActive] = useState<boolean>(false);
   const [isSending, setIsSending] = useState<boolean>(false);
   const [showProductSelection, setShowProductSelection] = useState<boolean>(false);
   const [showAboutUs, setShowAboutUs] = useState<boolean>(false);
   const [showProductsPage, setShowProductsPage] = useState<boolean>(false);
   const [selectedProductsCategory, setSelectedProductsCategory] = useState<string | null>(null);
-
-  // Get all products from all categories for the featured products section
-  const allProducts = productsData.categories.flatMap(category => 
-    category.items.map(item => ({
-      ...item,
-      category: category.name,
-      categoryId: category.id
-    }))
-  );
-
-  // Filter featured categories
-  const featuredCategories = productsData.categories.filter(category => category.featured);
-
-  // Create featured products by category for other sections
-  const featuredProductsByCategory = featuredCategories.map(category => ({
-    category: category,
-    products: category.items.slice(0, 3) // Show first 3 products from each featured category
-  }));
 
   // Map icon names to Lucide components
   const iconMap: { [key: string]: any } = {
@@ -53,28 +32,6 @@ export default function App() {
     ...category,
     icon: iconMap[category.icon] || Package
   }));
-
-  const scrollProducts = (direction: 'left' | 'right') => {
-    if (productsRef.current) {
-      const scrollAmount = 350;
-      productsRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const toggleProductExpansion = (productId: string) => {
-    setExpandedProducts(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
-      } else {
-        newSet.add(productId);
-      }
-      return newSet;
-    });
-  };
 
   // Helper functions for product marketing content
   const getProductHowItWorks = (product: any, categoryId: string): string => {
@@ -163,32 +120,6 @@ export default function App() {
     };
     return applicationMap[categoryId] || 'Versatile solution suitable for various construction and renovation projects with professional results.';
   };
-
-  // Slideshow effect for product categories
-  useEffect(() => {
-    const startSlideshow = () => {
-      setIsSlideshowActive(true);
-      setCurrentVisibleCategory(0);
-    };
-
-    // Start slideshow after initial animations complete (3 seconds)
-    const timer = setTimeout(startSlideshow, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!isSlideshowActive || featuredProductsByCategory.length <= 1) return;
-
-    const interval = setInterval(() => {
-      setCurrentVisibleCategory((prev) => {
-        const next = (prev + 1) % featuredProductsByCategory.length;
-        return next;
-      });
-    }, 10000); // Change category every 10 seconds
-
-    return () => clearInterval(interval);
-  }, [isSlideshowActive, featuredProductsByCategory.length]);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA]">
@@ -286,225 +217,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* Featured Products by Category */}
-      <section id="products" className="py-20 bg-[#F8F9FA]">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mb-12"
-          >
-            <h2 className="text-4xl font-bold text-[#212529] mb-3">Featured Products</h2>
-            <p className="text-[#6C757D]">Premium building materials organized by category</p>
-          </motion.div>
-
-          <div className="space-y-16 relative overflow-hidden">
-            {/* Slideshow Progress Indicator */}
-            {isSlideshowActive && featuredProductsByCategory.length > 1 && (
-              <div className="flex justify-center gap-2 mb-8">
-                {featuredProductsByCategory.map((_, index) => (
-                  <motion.div
-                    key={index}
-                    className="w-2 h-2 rounded-full bg-[#E9ECEF] cursor-pointer"
-                    animate={{
-                      backgroundColor: index === currentVisibleCategory ? '#1E5BA8' : '#E9ECEF',
-                      scale: index === currentVisibleCategory ? 1.2 : 1
-                    }}
-                    whileHover={{ scale: 1.3 }}
-                    onClick={() => setCurrentVisibleCategory(index)}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Individual Category Sections */}
-            <div className="space-y-16">
-              {featuredProductsByCategory.map((categorySection, categoryIndex) => (
-                <motion.div
-                  key={categorySection.category.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
-                  className="bg-white rounded-2xl shadow-lg border border-[#E9ECEF] overflow-hidden"
-                >
-                  {/* Category Header */}
-                  <div className={`p-6 ${categorySection.category.color} border-b border-[#E9ECEF]`}>
-                    <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-sm">
-                        <categorySection.category.icon className="w-7 h-7 text-[#1E5BA8]" />
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-bold text-[#212529]">{categorySection.category.name}</h3>
-                        <p className="text-[#6C757D] text-sm mt-1">
-                          {categorySection.category.description || `Professional-grade ${categorySection.category.name.toLowerCase()} solutions`}
-                        </p>
-                      </div>
-                      <div className="ml-auto">
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-[#1E5BA8] shadow-sm">
-                          {categorySection.products.length} Products
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Products Grid - Individual Product Cards */}
-                  <div className="p-6">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {categorySection.products.map((product, productIndex) => (
-                        <motion.div
-                          key={product.id}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.4, delay: productIndex * 0.1 }}
-                          className="bg-[#F8F9FA] rounded-xl overflow-hidden border border-[#E9ECEF] hover:shadow-lg transition-all group cursor-pointer"
-                          onClick={() => toggleProductExpansion(product.id)}
-                        >
-                          {/* Product Image - 60% */}
-                          <div className="relative h-48 bg-white p-4 flex items-center justify-center">
-                            <img 
-                              src={product.image_url} 
-                              alt={product.name}
-                              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = '/assets/meican-logo.png';
-                              }}
-                            />
-                            {/* Status Badge */}
-                            <div className="absolute top-3 right-3">
-                              {product.status_icon === 'droplet' ? (
-                                <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full flex items-center gap-1">
-                                  <Droplet className="w-3 h-3" />
-                                  Waterproof
-                                </span>
-                              ) : (
-                                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full flex items-center gap-1">
-                                  <Weight className="w-3 h-3" />
-                                  High-Strength
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          
-                          {/* Product Info - 40% */}
-                          <div className="p-4">
-                            <h4 className="font-bold text-[#212529] mb-2">{product.name}</h4>
-                            <p className="text-xs text-[#6C757D] mb-3 line-clamp-2">{product.description}</p>
-                            
-                            {/* Quick Specs */}
-                            {product.specs && (
-                              <div className="flex flex-wrap gap-1 mb-3">
-                                <span className="text-xs px-2 py-1 bg-white rounded text-[#6C757D]">
-                                  {product.specs.coverage}
-                                </span>
-                                <span className="text-xs px-2 py-1 bg-white rounded text-[#6C757D]">
-                                  {product.specs.curing_time}
-                                </span>
-                              </div>
-                            )}
-                            
-                            {/* Price & CTA */}
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <span className="text-lg font-bold text-[#1E5BA8]">
-                                  KES {product.price.toLocaleString()}
-                                </span>
-                                <span className="text-xs text-[#6C757D] block">{product.uom}</span>
-                              </div>
-                              <motion.button
-                                className="w-10 h-10 bg-[#1E5BA8] text-white rounded-full flex items-center justify-center shadow-md"
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setShowProductSelection(true);
-                                }}
-                              >
-                                <ChevronRight className="w-5 h-5" />
-                              </motion.button>
-                            </div>
-                          </div>
-                          
-                          {/* Expandable Details */}
-                          <motion.div
-                            initial={false}
-                            animate={{ height: expandedProducts.has(product.id) ? 'auto' : 0, opacity: expandedProducts.has(product.id) ? 1 : 0 }}
-                            className="overflow-hidden bg-white border-t border-[#E9ECEF]"
-                          >
-                            <div className="p-4 space-y-3">
-                              {/* Technical Specs */}
-                              {product.specs && (
-                                <div className="space-y-2">
-                                  <h5 className="text-xs font-semibold text-[#212529] uppercase tracking-wide">
-                                    Technical Specifications
-                                  </h5>
-                                  <div className="grid grid-cols-2 gap-2 text-xs">
-                                    {Object.entries(product.specs).map(([key, value]) => (
-                                      <div key={key} className="flex flex-col">
-                                        <span className="text-[#6C757D] capitalize">{key.replace('_', ' ')}</span>
-                                        <span className="font-medium text-[#212529]">{value as string}</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                              
-                              {/* Application Areas */}
-                              {product.application_areas && (
-                                <div className="flex flex-wrap gap-1">
-                                  {product.application_areas.map((area: string) => (
-                                    <span key={area} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
-                                      {area}
-                                    </span>
-                                  ))}
-                                </div>
-                              )}
-                              
-                              {/* Data Sheet Link */}
-                              {product.datasheet_url && (
-                                <a
-                                  href={product.datasheet_url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-2 text-xs text-[#1E5BA8] hover:text-[#1a4d8f] transition-colors"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  <FileText className="w-4 h-4" />
-                                  <span>Download Technical Data Sheet</span>
-                                </a>
-                              )}
-                            </div>
-                          </motion.div>
-                        </motion.div>
-                      ))}
-                    </div>
-                    
-                    {/* Category Footer CTA */}
-                    <div className="mt-6 pt-6 border-t border-[#E9ECEF]">
-                      <motion.button
-                        onClick={() => {
-                          setSelectedProductsCategory(categorySection.category.id);
-                          setShowProductsPage(true);
-                        }}
-                        className="w-full py-4 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all flex items-center justify-center gap-3 font-medium"
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
-                      >
-                        <Package className="w-5 h-5" />
-                        <span>View All {categorySection.category.name} Products</span>
-                        <ChevronRight className="w-5 h-5" />
-                      </motion.button>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Featured Products Showcase */}
+      <FeaturedProductsShowcase />
 
       {/* Value Proposition */}
       <section className="py-20 bg-[#F8F9FA]">
