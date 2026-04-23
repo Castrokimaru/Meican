@@ -4,7 +4,6 @@ import { useState } from "react";
 import meicanLogo from "../assets/meican-logo.png";
 import heroImage from "../assets/hero-image.png";
 import CustomerFeedback from "./components/CustomerFeedback";
-import ProductSelection from "./ProductSelection";
 import AboutUs from "./AboutUs";
 import ProductsPage from "./ProductsPage";
 import FeaturedProductsShowcase from "./FeaturedProductsShowcase";
@@ -13,7 +12,6 @@ import productsData from "../data/products.json";
 export default function App() {
   const [hoveredContact, setHoveredContact] = useState<string | null>(null);
   const [isSending, setIsSending] = useState<boolean>(false);
-  const [showProductSelection, setShowProductSelection] = useState<boolean>(false);
   const [showAboutUs, setShowAboutUs] = useState<boolean>(false);
   const [showProductsPage, setShowProductsPage] = useState<boolean>(false);
   const [selectedProductsCategory, setSelectedProductsCategory] = useState<string | null>(null);
@@ -137,15 +135,9 @@ export default function App() {
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm">
             <a href="#products" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Products</a>
-            <a href="#categories" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Categories</a>
+            <a href="#applications" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Applications</a>
+            <a href="#home" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Home</a>
             <a href="#contact" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Contact</a>
-            <button 
-              onClick={() => setShowProductSelection(true)}
-              className="px-6 py-2 bg-[#1E5BA8] text-white rounded-lg hover:bg-[#1a4d8f] transition-all active:scale-95 flex items-center gap-2"
-            >
-              <Package className="w-4 h-4" />
-              <span>Select Products</span>
-            </button>
           </div>
         </div>
       </motion.nav>
@@ -153,7 +145,7 @@ export default function App() {
       <div className="h-24" />
 
       {/* Hero Section */}
-      <section className="relative min-h-[calc(100vh-80px)] flex items-center overflow-hidden bg-white">
+      <section id="home" className="relative min-h-[calc(100vh-80px)] flex items-center overflow-hidden bg-white">
         <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -228,7 +220,7 @@ export default function App() {
               {
                 icon: Truck,
                 title: "Automated Delivery",
-                description: "From Athi River to your site. Zone-based pricing calculated automatically at checkout."
+                description: "From Machakos to your site. Zone-based pricing calculated automatically at checkout."
               },
               {
                 icon: Shield,
@@ -274,14 +266,14 @@ export default function App() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-[#212529] mb-3">Get In Touch</h2>
-            <p className="text-[#6C757D]">Located at Sika Kenya, Athi River</p>
+            <p className="text-[#6C757D]">Located at Mombasa Road, Machakos</p>
           </motion.div>
 
           <div className="max-w-2xl mx-auto space-y-1">
             {[
               { icon: Phone, label: "Phone", detail: "+254 700 123 456", key: "phone" },
-              { icon: Mail, label: "Email", detail: "sales@meican.co.ke", key: "email" },
-              { icon: MapPin, label: "Location", detail: "Josh Industrial Estate, Mombasa Road, Athi River", key: "location" }
+              { icon: Mail, label: "Email", detail: "meicanltd@outlook.com", key: "email" },
+              { icon: MapPin, label: "Location", detail: "Mombasa Road, Machakos, 11111, KE", key: "location" }
             ].map((contact, index) => (
               <motion.div
                 key={contact.key}
@@ -360,9 +352,9 @@ export default function App() {
             <div>
               <h4 className="font-semibold mb-4">Contact</h4>
               <div className="space-y-2 text-sm text-gray-400">
-                <p>Josh Industrial Estate, Athi River</p>
+                <p>Mombasa Road, Machakos, 11111, KE</p>
                 <p>+254 700 123 456</p>
-                <p>sales@meican.co.ke</p>
+                <p>meicanltd@outlook.com</p>
               </div>
             </div>
           </div>
@@ -387,11 +379,6 @@ export default function App() {
           scrollbar-width: none;
         }
       `}</style>
-      {/* Product Selection Modal */}
-      {showProductSelection && (
-        <ProductSelection onClose={() => setShowProductSelection(false)} />
-      )}
-
       {/* About Us Modal */}
       <AboutUs 
         isOpen={showAboutUs} 

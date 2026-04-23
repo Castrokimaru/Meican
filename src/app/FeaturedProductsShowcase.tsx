@@ -9,7 +9,7 @@ const applicationShowcases = [
     category: 'Waterproofing',
     categoryIcon: Droplet,
     description: 'Our waterproofing solutions protect buildings from water damage, ensuring long-term durability in Kenya\'s humid and rainy climate. Perfect for foundations, basements, and roofs.',
-    image: '/assets/Sikashield P24.png',
+    image: 'https://i.pinimg.com/736x/a6/62/d3/a662d362cc95ad95283f1400e19ec03d.jpg',
     imageAlt: 'Waterproofing application on concrete structure'
   },
   {
@@ -18,7 +18,7 @@ const applicationShowcases = [
     category: 'Concrete Admixtures',
     categoryIcon: Grid3x3,
     description: 'Enhance concrete strength and workability with our admixtures, ideal for high-rise buildings, bridges, and infrastructure projects across Kenya.',
-    image: '/assets/Sika MonoTop 412 S .png',
+    image: 'https://i.pinimg.com/736x/78/06/48/780648484ed5164fdade2736fe75a936.jpg',
     imageAlt: 'Concrete mixing with admixtures'
   },
   {
@@ -27,7 +27,7 @@ const applicationShowcases = [
     category: 'Elastic Sealing',
     categoryIcon: Lock,
     description: 'Flexible sealing solutions for expansion joints that withstand movement, temperature changes, and weather, preventing leaks in concrete structures.',
-    image: '/assets/Sikatop Seal-107.png',
+    image: 'https://i.pinimg.com/1200x/16/ce/9c/16ce9c4933ffd0ac2195d31fa18db5c9.jpg',
     imageAlt: 'Expansion joint sealing application'
   },
   {
@@ -43,9 +43,9 @@ const applicationShowcases = [
 
 export default function FeaturedProductsShowcase() {
   return (
-    <section className="py-20 bg-[#F8F9FA]">
+    <section id="products" className="py-20 bg-[#F8F9FA]">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
+        {/* Products Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -53,17 +53,49 @@ export default function FeaturedProductsShowcase() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold text-[#212529] mb-3">Application Showcases</h2>
+          <h2 className="text-4xl font-bold text-[#212529] mb-3">Our Products</h2>
           <p className="text-[#6C757D] max-w-2xl mx-auto">
-            See how our products perform in real construction projects across Kenya
+            Discover our premium construction solutions trusted by leading Kenyan contractors
           </p>
-          <div className="flex justify-center mt-6">
-            <button className="flex items-center gap-2 px-6 py-3 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all active:scale-95">
-              View All Applications
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
         </motion.div>
+
+        {/* Products Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          {applicationShowcases.map((showcase) => (
+            <motion.div
+              key={showcase.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="bg-white p-6 rounded-2xl shadow-lg border border-[#E9ECEF] hover:shadow-xl transition-shadow"
+            >
+              <div className="w-12 h-12 bg-[#1E5BA8]/10 rounded-xl flex items-center justify-center mb-4">
+                <showcase.categoryIcon className="w-6 h-6 text-[#1E5BA8]" />
+              </div>
+              <h3 className="font-semibold text-[#212529] mb-2">{showcase.category}</h3>
+              <p className="text-sm text-[#6C757D] mb-4">{showcase.title}</p>
+              <button className="text-[#1E5BA8] text-sm font-medium hover:text-[#1a4d8f] transition-colors">
+                View Details →
+              </button>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Applications Section */}
+        <div id="applications" className="pt-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-[#212529] mb-3">Application Showcases</h2>
+            <p className="text-[#6C757D] max-w-2xl mx-auto">
+              See how our products perform in real construction projects across Kenya
+            </p>
+          </motion.div>
 
         {/* Application Showcases */}
         <div className="space-y-20">
@@ -95,14 +127,9 @@ export default function FeaturedProductsShowcase() {
                     {showcase.title}
                   </h3>
 
-                  <p className="text-[#6C757D] text-lg leading-relaxed mb-6">
+                  <p className="text-[#6C757D] text-lg leading-relaxed">
                     {showcase.description}
                   </p>
-
-                  <button className="inline-flex items-center gap-2 px-6 py-3 bg-[#1E5BA8] text-white rounded-lg hover:bg-[#1a4d8f] transition-all active:scale-95 group">
-                    Learn More
-                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
                 </div>
 
                 {/* Image Section */}
@@ -128,6 +155,7 @@ export default function FeaturedProductsShowcase() {
               </motion.div>
             );
           })}
+        </div>
         </div>
       </div>
     </section>
