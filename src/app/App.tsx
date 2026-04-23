@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
 import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers, MessageCircle, FileText, Weight, Zap } from "lucide-react";
 import { useState } from "react";
-import meicanLogo from "../assets/meican-logo.png";
-import heroImage from "../assets/hero-image.png";
+const meicanLogo = '/assets/meican-logo.png';
+const heroImage = '/assets/hero-image.png';
 import CustomerFeedback from "./components/CustomerFeedback";
 import AboutUs from "./AboutUs";
 import ProductsPage from "./ProductsPage";
@@ -119,6 +119,10 @@ export default function App() {
     return applicationMap[categoryId] || 'Versatile solution suitable for various construction and renovation projects with professional results.';
   };
 
+  if (showProductsPage) {
+    return <ProductsPage onClose={() => setShowProductsPage(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-[#F8F9FA]">
       {/* Navigation */}
@@ -160,11 +164,8 @@ export default function App() {
               Premium construction solutions from basement to roof. Industrial-grade quality for contractors and DIY enthusiasts.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button 
-                onClick={() => {
-                  setSelectedProductsCategory(null);
-                  setShowProductsPage(true);
-                }}
+              <button
+                onClick={() => setShowProductsPage(true)}
                 className="px-8 py-4 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all active:scale-98 shadow-lg shadow-[#1E5BA8]/20 flex items-center justify-center gap-2 group"
               >
                 Browse Products
@@ -320,7 +321,7 @@ export default function App() {
             {/* Company Info */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <img src={meicanLogo} alt="Meican Limited" className="h-10 w-10 object-contain brightness-0 invert" />
+                <img src={meicanLogo} alt="Meican Limited" className="h-10 w-10 object-contain" />
                 <div className="font-semibold">MEICAN LIMITED</div>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
@@ -385,15 +386,7 @@ export default function App() {
         onClose={() => setShowAboutUs(false)} 
       />
 
-      {/* Products Page */}
-      <ProductsPage
-        isOpen={showProductsPage}
-        onClose={() => {
-          setShowProductsPage(false);
-          setSelectedProductsCategory(null);
-        }}
-        initialCategory={selectedProductsCategory}
-      />
+
 
       {/* WhatsApp Float Button */}
       <motion.a

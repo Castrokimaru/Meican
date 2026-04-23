@@ -75,9 +75,6 @@ export default function FeaturedProductsShowcase() {
               </div>
               <h3 className="font-semibold text-[#212529] mb-2">{showcase.category}</h3>
               <p className="text-sm text-[#6C757D] mb-4">{showcase.title}</p>
-              <button className="text-[#1E5BA8] text-sm font-medium hover:text-[#1a4d8f] transition-colors">
-                View Details →
-              </button>
             </motion.div>
           ))}
         </div>

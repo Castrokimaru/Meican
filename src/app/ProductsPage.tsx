@@ -1,12 +1,12 @@
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  X, 
-  Search, 
-  Filter, 
-  Grid3x3, 
-  List, 
-  Package, 
+import { useState, useMemo, useEffect } from 'react';
+import { motion } from 'motion/react';
+import {
+  X,
+  Search,
+  Filter,
+  Grid3x3,
+  List,
+  Package,
   ChevronRight,
   Droplet,
   Weight,
@@ -14,30 +14,45 @@ import {
   ShoppingCart,
   FileText,
   Download,
-  MapPin,
-  Eye,
-  ChevronDown
+  MapPin
 } from 'lucide-react';
 import productsData from '../data/products.json';
 
 interface ProductsPageProps {
-  isOpen: boolean;
   onClose: () => void;
-  initialCategory?: string | null;
 }
 
-export default function ProductsPage({ isOpen, onClose, initialCategory = null }: ProductsPageProps) {
+export default function ProductsPage({ onClose }: ProductsPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
-  const [expandedProduct, setExpandedProduct] = useState<string | null>(null);
+  const [selectedProducts, setSelectedProducts] = useState<Map<string, number>>(new Map());
   const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name');
   const [showFilters, setShowFilters] = useState(false);
 
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('meican-cart');
+    if (savedCart) {
+      try {
+        const cartData = JSON.parse(savedCart);
+        const cartMap = new Map(Object.entries(cartData));
+        setSelectedProducts(cartMap);
+      } catch (error) {
+        console.error('Failed to load cart from localStorage:', error);
+      }
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    const cartData = Object.fromEntries(selectedProducts);
+    localStorage.setItem('meican-cart', JSON.stringify(cartData));
+  }, [selectedProducts]);
+
   // Get all products flattened
   const allProducts = useMemo(() => {
-    return productsData.categories.flatMap(category => 
+    return productsData.categories.flatMap(category =>
       category.items.map(item => ({
         ...item,
         categoryName: category.name,
@@ -46,6 +61,11 @@ export default function ProductsPage({ isOpen, onClose, initialCategory = null }
       }))
     );
   }, []);
+
+  // Calculate total selected quantity
+  const totalSelectedQuantity = useMemo(() => {
+    return Array.from(selectedProducts.values()).reduce((sum, qty) => sum + qty, 0);
+  }, [selectedProducts]);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -87,15 +107,15 @@ export default function ProductsPage({ isOpen, onClose, initialCategory = null }
     }));
   }, []);
 
-  const toggleProductSelection = (productId: string) => {
+  const updateProductQuantity = (productId: string, quantity: number) => {
     setSelectedProducts(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
+      const newMap = new Map(prev);
+      if (quantity <= 0) {
+        newMap.delete(productId);
       } else {
-        newSet.add(productId);
+        newMap.set(productId, quantity);
       }
-      return newSet;
+      return newMap;
     });
   };
 
@@ -107,31 +127,25 @@ export default function ProductsPage({ isOpen, onClose, initialCategory = null }
 
   const handleInquiry = () => {
     if (selectedProducts.size === 0) return;
-    
+
     const selectedItems = allProducts.filter(p => selectedProducts.has(p.id));
-    const productList = selectedItems.map(p => 
-      `- ${p.name} (KES ${p.price.toLocaleString()}) - ${p.uom}`
-    ).join('\n');
-    
-    const total = selectedItems.reduce((sum, p) => sum + p.price, 0);
-    
+    const productList = selectedItems.map(p => {
+      const quantity = selectedProducts.get(p.id) || 0;
+      const itemTotal = p.price * quantity;
+      return `- ${p.name} x${quantity} (KES ${itemTotal.toLocaleString()}) - ${p.uom}`;
+    }).join('\n');
+
+    const total = selectedItems.reduce((sum, p) => sum + (p.price * (selectedProducts.get(p.id) || 0)), 0);
+
     const message = encodeURIComponent(
       `Hi, I'm interested in the following products:\n\n${productList}\n\nTotal: KES ${total.toLocaleString()}\n\nCan you provide more information about availability and delivery?`
     );
-    
+
     window.open(`https://wa.me/254797259150?text=${message}`, '_blank');
   };
 
-  if (!isOpen) return null;
-
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-white z-50 overflow-y-auto"
-      >
+    <div className="min-h-screen bg-white">
         {/* Header */}
         <header className="sticky top-0 bg-white border-b border-[#E9ECEF] z-40">
           <div className="max-w-7xl mx-auto px-6 py-4">
@@ -167,14 +181,14 @@ export default function ProductsPage({ isOpen, onClose, initialCategory = null }
 
               {/* Selected Count & Inquiry */}
               <div className="flex items-center gap-3">
-                {selectedProducts.size > 0 && (
+                {totalSelectedQuantity > 0 && (
                   <motion.div
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-lg"
                   >
                     <ShoppingCart className="w-4 h-4" />
-                    <span className="text-sm font-medium">{selectedProducts.size}</span>
+                    <span className="text-sm font-medium">{totalSelectedQuantity}</span>
                   </motion.div>
                 )}
                 <button
@@ -381,20 +395,34 @@ export default function ProductsPage({ isOpen, onClose, initialCategory = null }
                             <span className="text-xs text-[#1E5BA8] font-medium">{product.categoryName}</span>
                             <h3 className="font-bold text-[#212529] text-lg">{product.name}</h3>
                           </div>
-                          <button
-                            onClick={() => toggleProductSelection(product.id)}
-                            className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0 ${
-                              selectedProducts.has(product.id)
-                                ? 'bg-[#1E5BA8] border-[#1E5BA8] text-white'
-                                : 'border-[#E9ECEF] hover:border-[#1E5BA8]'
-                            }`}
-                          >
+                          <div className="flex items-center gap-2 flex-shrink-0">
                             {selectedProducts.has(product.id) ? (
-                              <span className="text-sm">✓</span>
+                              <>
+                                <button
+                                  onClick={() => updateProductQuantity(product.id, (selectedProducts.get(product.id) || 0) - 1)}
+                                  className="w-8 h-8 rounded-full border-2 border-[#1E5BA8] bg-[#1E5BA8] text-white flex items-center justify-center hover:bg-[#1a4d8f] transition-colors"
+                                >
+                                  <span className="text-sm">-</span>
+                                </button>
+                                <span className="px-3 py-1 bg-[#1E5BA8] text-white rounded-lg font-medium min-w-[3rem] text-center">
+                                  {selectedProducts.get(product.id)}
+                                </span>
+                                <button
+                                  onClick={() => updateProductQuantity(product.id, (selectedProducts.get(product.id) || 0) + 1)}
+                                  className="w-8 h-8 rounded-full border-2 border-[#1E5BA8] bg-[#1E5BA8] text-white flex items-center justify-center hover:bg-[#1a4d8f] transition-colors"
+                                >
+                                  <span className="text-sm">+</span>
+                                </button>
+                              </>
                             ) : (
-                              <span className="text-sm text-[#6C757D]">+</span>
+                              <button
+                                onClick={() => updateProductQuantity(product.id, 1)}
+                                className="px-4 py-2 bg-[#1E5BA8] text-white rounded-lg hover:bg-[#1a4d8f] transition-colors font-medium"
+                              >
+                                Add to Cart
+                              </button>
                             )}
-                          </button>
+                          </div>
                         </div>
 
                         <p className="text-sm text-[#6C757D] mb-3 line-clamp-2">{product.description}</p>
@@ -433,68 +461,10 @@ export default function ProductsPage({ isOpen, onClose, initialCategory = null }
                                 <Download className="w-5 h-5" />
                               </a>
                             )}
-                            <button
-                              onClick={() => setExpandedProduct(expandedProduct === product.id ? null : product.id)}
-                              className="flex items-center gap-1 px-3 py-1.5 bg-[#F8F9FA] hover:bg-[#E9ECEF] text-[#6C757D] rounded-lg text-sm transition-colors"
-                            >
-                              <Eye className="w-4 h-4" />
-                              Details
-                              <ChevronDown className={`w-4 h-4 transition-transform ${expandedProduct === product.id ? 'rotate-180' : ''}`} />
-                            </button>
                           </div>
                         </div>
 
-                        {/* Expanded Details */}
-                        <AnimatePresence>
-                          {expandedProduct === product.id && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="pt-4 mt-4 border-t border-[#E9ECEF] space-y-3">
-                                {product.specs && (
-                                  <div>
-                                    <h4 className="text-xs font-semibold text-[#212529] uppercase tracking-wide mb-2">
-                                      Technical Specifications
-                                    </h4>
-                                    <div className="grid grid-cols-2 gap-2 text-xs">
-                                      {Object.entries(product.specs).map(([key, value]) => (
-                                        <div key={key} className="flex flex-col bg-[#F8F9FA] p-2 rounded">
-                                          <span className="text-[#6C757D] capitalize">{key.replace('_', ' ')}</span>
-                                          <span className="font-medium text-[#212529]">{value as string}</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
 
-                                {product.application_areas && (
-                                  <div>
-                                    <h4 className="text-xs font-semibold text-[#212529] uppercase tracking-wide mb-2">
-                                      Application Areas
-                                    </h4>
-                                    <div className="flex flex-wrap gap-1">
-                                      {product.application_areas.map((area: string) => (
-                                        <span key={area} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
-                                          {area}
-                                        </span>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-
-                                <div className="flex items-center gap-2 text-xs text-[#6C757D]">
-                                  <MapPin className="w-4 h-4" />
-                                  <span>SKU: {product.sku}</span>
-                                  <span className="mx-2">•</span>
-                                  <span>Status: {product.status === 'stock' ? 'In Stock' : 'Available to Order'}</span>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
                       </div>
                     </motion.div>
                   ))}
@@ -505,8 +475,7 @@ export default function ProductsPage({ isOpen, onClose, initialCategory = null }
         </div>
 
         {/* Floating Selected Products Bar */}
-        <AnimatePresence>
-          {selectedProducts.size > 0 && (
+        {selectedProducts.size > 0 && (
             <motion.div
               initial={{ y: 100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -514,17 +483,17 @@ export default function ProductsPage({ isOpen, onClose, initialCategory = null }
               className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#212529] text-white px-6 py-4 rounded-xl shadow-2xl z-50 flex items-center gap-6"
             >
               <div>
-                <span className="text-sm text-gray-400">{selectedProducts.size} product{selectedProducts.size !== 1 ? 's' : ''} selected</span>
-                <div className="font-semibold">
-                  KES {allProducts
-                    .filter(p => selectedProducts.has(p.id))
-                    .reduce((sum, p) => sum + p.price, 0)
-                    .toLocaleString()}
+                <span className="text-sm text-gray-400">{totalSelectedQuantity} item{totalSelectedQuantity !== 1 ? 's' : ''} selected</span>
+                  <div className="font-semibold">
+                    KES {allProducts
+                      .filter(p => selectedProducts.has(p.id))
+                      .reduce((sum, p) => sum + (p.price * (selectedProducts.get(p.id) || 0)), 0)
+                      .toLocaleString()}
+                  </div>
                 </div>
-              </div>
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => setSelectedProducts(new Set())}
+                  onClick={() => setSelectedProducts(new Map())}
                   className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
                 >
                   Clear
@@ -539,8 +508,6 @@ export default function ProductsPage({ isOpen, onClose, initialCategory = null }
               </div>
             </motion.div>
           )}
-        </AnimatePresence>
-      </motion.div>
-    </AnimatePresence>
+    </div>
   );
 }

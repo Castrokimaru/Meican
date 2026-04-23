@@ -27,13 +27,13 @@
           "tags": ["exclusive vat"]
         },
         {
-          "id": "sika-topseal-107",
+          "id": "sika-topseal-107-25kg",
           "name": "Sika Topseal 107",
-          "sku": "TOP107",
+          "sku": "TOP10725",
           "status": "stock",
           "uom": "25 KG",
           "price": 5800.00,
-          "image_url": "/assets/sikaTop seal-107.png",
+          "image_url": "",
           "description": "High-performance cementitious waterproofing sealant",
           "tags": ["exclusive vat"]
         },
@@ -44,7 +44,7 @@
           "status": "stock",
           "uom": "25 KG",
           "price": 6000.00,
-          "image_url": "/assets/sikatop  seal -107 KE 25kg .png",
+          "image_url": "",
           "description": "Polymer-modified cementitious waterproofing coating",
           "tags": ["exclusive vat"]
         },
@@ -55,7 +55,7 @@
           "status": "stock",
           "uom": "25 KG",
           "price": 3400.00,
-          "image_url": "/assets/Sikatop - 105 seal KE.png",
+          "image_url": "",
           "description": "Cementitious waterproofing coating for concrete and masonry",
           "tags": ["exclusive vat"]
         },
@@ -88,7 +88,7 @@
           "status": "stock",
           "uom": "1 KG",
           "price": 210.00,
-          "image_url": "/assets/Sikalite 1kg.png",
+          "image_url": "",
           "description": "Superplasticizer for high-strength concrete",
           "tags": ["exclusive vat"]
         }
@@ -137,13 +137,35 @@
           "tags": ["exclusive vat"]
         },
         {
-          "id": "sika-latex-ke",
-          "name": "Sika Latex KE",
-          "sku": "LATEX001",
+          "id": "sika-dur-31-cf-04",
+          "name": "Sika Dur 31 CF",
+          "sku": "DUR31CF04",
           "status": "stock",
-          "uom": "5 L",
+          "uom": "0.4 KG",
+          "price": 1350.00,
+          "image_url": "/assets/Sikadur -31 CF slow comp B -0.4kg .png",
+          "description": "Slow cure epoxy bonding agent for structural connections",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-latex-ke-25kg",
+          "name": "Sika Latex KE",
+          "sku": "LATEX025",
+          "status": "stock",
+          "uom": "25 KG",
           "price": 1850.00,
-          "image_url": "/assets/Sikalite 1kg.png",
+          "image_url": "/assets/Sikalatex KE 25kg .png",
+          "description": "Acrylic polymer modifier for cementitious mortars and screeds",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-latex-ke-5kg",
+          "name": "Sika Latex KE",
+          "sku": "LATEX005",
+          "status": "stock",
+          "uom": "5 KG",
+          "price": 1850.00,
+          "image_url": "/assets/Sikalatex KE 5kg.png",
           "description": "Acrylic polymer modifier for cementitious mortars and screeds",
           "tags": ["exclusive vat"]
         }
@@ -165,7 +187,7 @@
           "status": "stock",
           "uom": "25 KG",
           "price": 2450.00,
-          "image_url": "/assets/Sikatop - 105 seal KE.png",
+          "image_url": "/assets/Sika MonoTop 412 S .png",
           "description": "One-component cementitious repair mortar for vertical and overhead surfaces",
           "tags": ["exclusive vat"]
         }

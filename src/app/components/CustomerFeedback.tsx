@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Star, ThumbsUp, Eye, MapPin, CheckCircle2, Quote } from 'lucide-react';
 
@@ -163,6 +163,21 @@ export default function CustomerFeedback() {
   const [likeCounts, setLikeCounts] = useState<Record<number, number>>(
     Object.fromEntries(testimonials.map((t) => [t.id, t.likes]))
   );
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Group testimonials into slides of 3
+  const testimonialSlides = [];
+  for (let i = 0; i < testimonials.length; i += 3) {
+    testimonialSlides.push(testimonials.slice(i, i + 3));
+  }
+
+  // Auto-slide every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % testimonialSlides.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [testimonialSlides.length]);
 
   const toggleLike = (id: number) => {
     setLikedIds((prev) => {
@@ -201,104 +216,129 @@ export default function CustomerFeedback() {
           </p>
         </motion.div>
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {testimonials.map((t, index) => (
-            <motion.div
-              key={t.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.45, delay: index * 0.07 }}
-              className="bg-white rounded-2xl border border-[#E9ECEF] p-5 flex flex-col gap-4 hover:shadow-lg transition-shadow"
-            >
-              {/* Quote icon */}
-              <div className="flex items-start justify-between">
-                <Quote className="w-8 h-8 text-[#1E5BA8]/20 fill-[#1E5BA8]/10" />
-                <span className="flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">
-                  <CheckCircle2 className="w-3 h-3" />
-                  Verified
-                </span>
-              </div>
+        {/* Testimonials Carousel */}
+        <div className="relative overflow-hidden">
+          <motion.div
+            className="flex"
+            animate={{ x: -currentSlide * 100 + '%' }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+          >
+            {testimonialSlides.map((slide, slideIndex) => (
+              <div key={slideIndex} className="flex-shrink-0 w-full">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {slide.map((t, index) => (
+                    <motion.div
+                      key={t.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.45, delay: (slideIndex * 3 + index) * 0.07 }}
+                      className="bg-white rounded-2xl border border-[#E9ECEF] p-5 flex flex-col gap-4 hover:shadow-lg transition-shadow"
+                    >
+                      {/* Quote icon */}
+                      <div className="flex items-start justify-between">
+                        <Quote className="w-8 h-8 text-[#1E5BA8]/20 fill-[#1E5BA8]/10" />
+                        <span className="flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">
+                          <CheckCircle2 className="w-3 h-3" />
+                          Verified
+                        </span>
+                      </div>
 
-              {/* Star Rating */}
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`w-4 h-4 ${
-                      i < t.rating
-                        ? 'text-yellow-400 fill-yellow-400'
-                        : 'text-gray-200 fill-gray-200'
-                    }`}
-                  />
-                ))}
-              </div>
+                      {/* Star Rating */}
+                      <div className="flex items-center gap-0.5">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-4 h-4 ${
+                              i < t.rating
+                                ? 'text-yellow-400 fill-yellow-400'
+                                : 'text-gray-200 fill-gray-200'
+                            }`}
+                          />
+                        ))}
+                      </div>
 
-              {/* Feedback Text */}
-              <p className="text-sm text-[#6C757D] leading-relaxed flex-1 line-clamp-5">
-                "{t.feedback}"
-              </p>
+                      {/* Feedback Text */}
+                      <p className="text-sm text-[#6C757D] leading-relaxed flex-1 line-clamp-5">
+                        "{t.feedback}"
+                      </p>
 
-              {/* Project tag */}
-              <div className="text-xs text-[#1E5BA8] font-medium bg-[#1E5BA8]/8 px-3 py-1.5 rounded-lg truncate">
-                📌 {t.project}
-              </div>
+                      {/* Project tag */}
+                      <div className="text-xs text-[#1E5BA8] font-medium bg-[#1E5BA8]/8 px-3 py-1.5 rounded-lg truncate">
+                        📌 {t.project}
+                      </div>
 
-              {/* Reviewer */}
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
-                  style={{ backgroundColor: t.avatarColor }}
-                >
-                  {t.initials}
+                      {/* Reviewer */}
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                          style={{ backgroundColor: t.avatarColor }}
+                        >
+                          {t.initials}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-semibold text-[#212529] text-sm truncate">
+                            {t.name}
+                          </div>
+                          <div className="text-xs text-[#6C757D] truncate">
+                            {t.role} · {t.company}
+                          </div>
+                          <div className="flex items-center gap-1 text-xs text-[#6C757D] mt-0.5">
+                            <MapPin className="w-3 h-3 flex-shrink-0" />
+                            <span className="truncate">{t.location}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="border-t border-[#E9ECEF]" />
+
+                      {/* Footer: likes + views + date */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          {/* Like button */}
+                          <motion.button
+                            whileTap={{ scale: 0.85 }}
+                            onClick={() => toggleLike(t.id)}
+                            className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors ${
+                              likedIds.has(t.id)
+                                ? 'bg-[#1E5BA8] text-white'
+                                : 'bg-[#F8F9FA] text-[#6C757D] hover:bg-[#E9ECEF]'
+                            }`}
+                          >
+                            <ThumbsUp className="w-3.5 h-3.5" />
+                            <span>{likeCounts[t.id]}</span>
+                          </motion.button>
+
+                          {/* Views */}
+                          <div className="flex items-center gap-1.5 text-xs text-[#6C757D]">
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>{t.views.toLocaleString()}</span>
+                          </div>
+                        </div>
+
+                        {/* Date */}
+                        <span className="text-xs text-[#6C757D]">{t.date}</span>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
-                <div className="min-w-0">
-                  <div className="font-semibold text-[#212529] text-sm truncate">
-                    {t.name}
-                  </div>
-                  <div className="text-xs text-[#6C757D] truncate">
-                    {t.role} · {t.company}
-                  </div>
-                  <div className="flex items-center gap-1 text-xs text-[#6C757D] mt-0.5">
-                    <MapPin className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate">{t.location}</span>
-                  </div>
-                </div>
               </div>
+            ))}
+          </motion.div>
 
-              {/* Divider */}
-              <div className="border-t border-[#E9ECEF]" />
-
-              {/* Footer: likes + views + date */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  {/* Like button */}
-                  <motion.button
-                    whileTap={{ scale: 0.85 }}
-                    onClick={() => toggleLike(t.id)}
-                    className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors ${
-                      likedIds.has(t.id)
-                        ? 'bg-[#1E5BA8] text-white'
-                        : 'bg-[#F8F9FA] text-[#6C757D] hover:bg-[#E9ECEF]'
-                    }`}
-                  >
-                    <ThumbsUp className="w-3.5 h-3.5" />
-                    <span>{likeCounts[t.id]}</span>
-                  </motion.button>
-
-                  {/* Views */}
-                  <div className="flex items-center gap-1.5 text-xs text-[#6C757D]">
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>{t.views.toLocaleString()}</span>
-                  </div>
-                </div>
-
-                {/* Date */}
-                <span className="text-xs text-[#6C757D]">{t.date}</span>
-              </div>
-            </motion.div>
-          ))}
+          {/* Slider Dots */}
+          <div className="flex justify-center gap-2 mt-6">
+            {testimonialSlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  index === currentSlide ? 'bg-[#1E5BA8]' : 'bg-[#E9ECEF]'
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Bottom CTA */}

@@ -12,7 +12,7 @@ import {
   FileText,
   ExternalLink
 } from 'lucide-react';
-import meicanLogo from '../assets/meican-logo.png';
+const meicanLogo = '/assets/meican-logo.png';
 
 interface AboutUsProps {
   isOpen: boolean;

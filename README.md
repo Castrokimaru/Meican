@@ -76,9 +76,8 @@ src/
 |   |-- App.css              # Application styles
 |-- data/
 |   |-- products.json        # Product catalog data
-|-- assets/                  # Static assets and images
 public/
-|-- assets/                  # Public assets for direct serving
+|-- assets/                  # Static assets and images
 ```
 
 ## Features
