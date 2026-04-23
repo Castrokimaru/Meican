@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Package, ChevronRight, Check, X, ArrowLeft, Droplet, Weight, Zap, Shield, FileText, Download, MapPin } from 'lucide-react';
+import { Package, ChevronRight, Check, X, ArrowLeft, Droplet, Weight, Zap, Shield, FileText, Download, MapPin, Star, Eye } from 'lucide-react';
 import productsData from '../data/products.json';
+import ProductDetailModal from './ProductDetailModal';
 
 interface ProductSelectionProps {
   onClose: () => void;
@@ -18,6 +19,8 @@ interface SelectedProduct {
 export default function ProductSelection({ onClose }: ProductSelectionProps) {
   const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
   const [isSending, setIsSending] = useState(false);
+  const [selectedProductForDetail, setSelectedProductForDetail] = useState<any>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   const allProducts = productsData.categories.flatMap(category =>
     category.items.map(item => ({
@@ -86,6 +89,24 @@ export default function ProductSelection({ onClose }: ProductSelectionProps) {
       setIsSending(false);
       onClose();
     }, 2000);
+  };
+
+  const openProductDetail = (product: any) => {
+    setSelectedProductForDetail(product);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeProductDetail = () => {
+    setIsDetailModalOpen(false);
+    setSelectedProductForDetail(null);
+  };
+
+  const handleWhatsAppInquiryFromDetail = () => {
+    if (selectedProductForDetail) {
+      toggleProductSelection(selectedProductForDetail.id);
+      closeProductDetail();
+      // The inquiry will be sent when they click Send Inquiry button
+    }
   };
 
   return (
@@ -234,6 +255,20 @@ export default function ProductSelection({ onClose }: ProductSelectionProps) {
                             <div className="text-lg font-bold text-green-600">KES {product.price.toLocaleString()}</div>
                             <div className="text-xs text-[#6C757D]">{product.uom}</div>
                           </div>
+                          
+                          {/* View Specs Button - Primary CTA */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openProductDetail(product);
+                            }}
+                            className="px-3 py-1.5 bg-[#1E5BA8] text-white text-xs rounded-lg hover:bg-[#1a4d8f] transition-colors flex items-center gap-1.5"
+                          >
+                            <Eye className="w-3 h-3" />
+                            View Specs & Reviews
+                          </button>
+                          
+                          {/* Quick Add Checkbox */}
                           <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${
                             selectedProducts.has(product.id)
                               ? 'border-green-500 bg-green-500'
@@ -357,6 +392,20 @@ export default function ProductSelection({ onClose }: ProductSelectionProps) {
                             <div className="text-lg font-bold text-blue-600">KES {product.price.toLocaleString()}</div>
                             <div className="text-xs text-[#6C757D]">{product.uom}</div>
                           </div>
+                          
+                          {/* View Specs Button - Primary CTA */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openProductDetail(product);
+                            }}
+                            className="px-3 py-1.5 bg-[#1E5BA8] text-white text-xs rounded-lg hover:bg-[#1a4d8f] transition-colors flex items-center gap-1.5"
+                          >
+                            <Eye className="w-3 h-3" />
+                            View Specs & Reviews
+                          </button>
+                          
+                          {/* Quick Add Checkbox */}
                           <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${
                             selectedProducts.has(product.id)
                               ? 'border-blue-500 bg-blue-500'
@@ -434,6 +483,14 @@ export default function ProductSelection({ onClose }: ProductSelectionProps) {
           </div>
         </div>
       </motion.div>
+
+      {/* Product Detail Modal */}
+      <ProductDetailModal
+        product={selectedProductForDetail}
+        isOpen={isDetailModalOpen}
+        onClose={closeProductDetail}
+        onWhatsAppInquiry={handleWhatsAppInquiryFromDetail}
+      />
     </div>
   );
 }

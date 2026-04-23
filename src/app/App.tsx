@@ -1,38 +1,20 @@
 import { motion } from "motion/react";
 import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers, MessageCircle, FileText, Weight, Zap } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import meicanLogo from "../assets/meican-logo.png";
 import heroImage from "../assets/hero-image.png";
-import MarqueeLogos from "./components/MarqueeLogos";
-import ProductSelection from "./ProductSelection";
+import CustomerFeedback from "./components/CustomerFeedback";
+import AboutUs from "./AboutUs";
+import ProductsPage from "./ProductsPage";
+import FeaturedProductsShowcase from "./FeaturedProductsShowcase";
 import productsData from "../data/products.json";
 
 export default function App() {
-  const productsRef = useRef<HTMLDivElement>(null);
   const [hoveredContact, setHoveredContact] = useState<string | null>(null);
-  const [expandedProducts, setExpandedProducts] = useState<Set<string>>(new Set());
-  const [currentVisibleCategory, setCurrentVisibleCategory] = useState<number>(0);
-  const [isSlideshowActive, setIsSlideshowActive] = useState<boolean>(false);
   const [isSending, setIsSending] = useState<boolean>(false);
-  const [showProductSelection, setShowProductSelection] = useState<boolean>(false);
-
-  // Get all products from all categories for the featured products section
-  const allProducts = productsData.categories.flatMap(category => 
-    category.items.map(item => ({
-      ...item,
-      category: category.name,
-      categoryId: category.id
-    }))
-  );
-
-  // Filter featured categories
-  const featuredCategories = productsData.categories.filter(category => category.featured);
-
-  // Create featured products by category for other sections
-  const featuredProductsByCategory = featuredCategories.map(category => ({
-    category: category,
-    products: category.items.slice(0, 3) // Show first 3 products from each featured category
-  }));
+  const [showAboutUs, setShowAboutUs] = useState<boolean>(false);
+  const [showProductsPage, setShowProductsPage] = useState<boolean>(false);
+  const [selectedProductsCategory, setSelectedProductsCategory] = useState<string | null>(null);
 
   // Map icon names to Lucide components
   const iconMap: { [key: string]: any } = {
@@ -48,28 +30,6 @@ export default function App() {
     ...category,
     icon: iconMap[category.icon] || Package
   }));
-
-  const scrollProducts = (direction: 'left' | 'right') => {
-    if (productsRef.current) {
-      const scrollAmount = 350;
-      productsRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const toggleProductExpansion = (productId: string) => {
-    setExpandedProducts(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
-      } else {
-        newSet.add(productId);
-      }
-      return newSet;
-    });
-  };
 
   // Helper functions for product marketing content
   const getProductHowItWorks = (product: any, categoryId: string): string => {
@@ -159,32 +119,6 @@ export default function App() {
     return applicationMap[categoryId] || 'Versatile solution suitable for various construction and renovation projects with professional results.';
   };
 
-  // Slideshow effect for product categories
-  useEffect(() => {
-    const startSlideshow = () => {
-      setIsSlideshowActive(true);
-      setCurrentVisibleCategory(0);
-    };
-
-    // Start slideshow after initial animations complete (3 seconds)
-    const timer = setTimeout(startSlideshow, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!isSlideshowActive || featuredProductsByCategory.length <= 1) return;
-
-    const interval = setInterval(() => {
-      setCurrentVisibleCategory((prev) => {
-        const next = (prev + 1) % featuredProductsByCategory.length;
-        return next;
-      });
-    }, 10000); // Change category every 10 seconds
-
-    return () => clearInterval(interval);
-  }, [isSlideshowActive, featuredProductsByCategory.length]);
-
   return (
     <div className="min-h-screen bg-[#F8F9FA]">
       {/* Navigation */}
@@ -201,15 +135,9 @@ export default function App() {
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm">
             <a href="#products" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Products</a>
-            <a href="#categories" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Categories</a>
+            <a href="#applications" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Applications</a>
+            <a href="#home" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Home</a>
             <a href="#contact" className="text-[#212529] hover:text-[#1E5BA8] transition-colors">Contact</a>
-            <button 
-              onClick={() => setShowProductSelection(true)}
-              className="px-6 py-2 bg-[#1E5BA8] text-white rounded-lg hover:bg-[#1a4d8f] transition-all active:scale-95 flex items-center gap-2"
-            >
-              <Package className="w-4 h-4" />
-              <span>Select Products</span>
-            </button>
           </div>
         </div>
       </motion.nav>
@@ -217,7 +145,7 @@ export default function App() {
       <div className="h-24" />
 
       {/* Hero Section */}
-      <section className="relative min-h-[calc(100vh-80px)] flex items-center overflow-hidden bg-white">
+      <section id="home" className="relative min-h-[calc(100vh-80px)] flex items-center overflow-hidden bg-white">
         <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -232,7 +160,13 @@ export default function App() {
               Premium construction solutions from basement to roof. Industrial-grade quality for contractors and DIY enthusiasts.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-8 py-4 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all active:scale-98 shadow-lg shadow-[#1E5BA8]/20 flex items-center justify-center gap-2 group">
+              <button 
+                onClick={() => {
+                  setSelectedProductsCategory(null);
+                  setShowProductsPage(true);
+                }}
+                className="px-8 py-4 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all active:scale-98 shadow-lg shadow-[#1E5BA8]/20 flex items-center justify-center gap-2 group"
+              >
                 Browse Products
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -275,108 +209,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* Featured Products by Category */}
-      <section id="products" className="py-20 bg-[#F8F9FA]">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mb-12"
-          >
-            <h2 className="text-4xl font-bold text-[#212529] mb-3">Featured Products</h2>
-            <p className="text-[#6C757D]">Premium building materials organized by category</p>
-          </motion.div>
-
-          <div className="space-y-16 relative overflow-hidden">
-            {/* Slideshow Progress Indicator */}
-            {isSlideshowActive && featuredProductsByCategory.length > 1 && (
-              <div className="flex justify-center gap-2 mb-8">
-                {featuredProductsByCategory.map((_, index) => (
-                  <motion.div
-                    key={index}
-                    className="w-2 h-2 rounded-full bg-[#E9ECEF] cursor-pointer"
-                    animate={{
-                      backgroundColor: index === currentVisibleCategory ? '#1E5BA8' : '#E9ECEF',
-                      scale: index === currentVisibleCategory ? 1.2 : 1
-                    }}
-                    whileHover={{ scale: 1.3 }}
-                    onClick={() => setCurrentVisibleCategory(index)}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Categories Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredProductsByCategory.map((categorySection, categoryIndex) => (
-                <motion.div
-                  key={categorySection.category.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: categoryIndex * 0.15 }}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden border border-[#E9ECEF] hover:shadow-xl transition-shadow"
-                >
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${categorySection.category.color}`}>
-                        <categorySection.category.icon className="w-5 h-5 text-[#1E5BA8]" />
-                      </div>
-                      <h3 className="font-semibold text-[#212529]">{categorySection.category.name}</h3>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      {categorySection.products.map((product) => (
-                        <motion.div
-                          key={product.id}
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.3 }}
-                          className="flex items-center gap-3 p-3 bg-[#F8F9FA] rounded-lg group cursor-pointer hover:bg-[#E9ECEF] transition-colors"
-                          onClick={() => toggleProductExpansion(product.id)}
-                        >
-                          <img 
-                            src={product.image_url} 
-                            alt={product.name}
-                            className="w-12 h-12 object-cover rounded-lg"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <div className="font-medium text-sm text-[#212529] truncate">{product.name}</div>
-                            <div className="text-xs text-[#6C757D]">KES {product.price.toLocaleString()}</div>
-                          </div>
-                          <motion.button 
-                            className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <ChevronRight className={`w-4 h-4 text-[#6C757D] transition-transform duration-200 ${
-                              expandedProducts.has(product.id) ? 'rotate-90' : ''
-                            }`} />
-                          </motion.button>
-                        </motion.div>
-                      ))}
-                    </div>
-                    
-                    <motion.button
-                      onClick={() => setShowProductSelection(true)}
-                      className="w-full mt-4 py-3 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all flex items-center justify-center gap-2"
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Package className="w-4 h-4" />
-                      <span>Select Products</span>
-                    </motion.button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Featured Products Showcase */}
+      <FeaturedProductsShowcase />
 
       {/* Value Proposition */}
       <section className="py-20 bg-[#F8F9FA]">
@@ -386,7 +220,7 @@ export default function App() {
               {
                 icon: Truck,
                 title: "Automated Delivery",
-                description: "From Athi River to your site. Zone-based pricing calculated automatically at checkout."
+                description: "From Machakos to your site. Zone-based pricing calculated automatically at checkout."
               },
               {
                 icon: Shield,
@@ -418,8 +252,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* Client Logos Marquee */}
-      <MarqueeLogos />
+      {/* Customer Feedback */}
+      <CustomerFeedback />
 
       {/* Contact Section */}
       <section id="contact" className="py-20 bg-white">
@@ -432,14 +266,14 @@ export default function App() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-[#212529] mb-3">Get In Touch</h2>
-            <p className="text-[#6C757D]">Located at Sika Kenya, Athi River</p>
+            <p className="text-[#6C757D]">Located at Mombasa Road, Machakos</p>
           </motion.div>
 
           <div className="max-w-2xl mx-auto space-y-1">
             {[
               { icon: Phone, label: "Phone", detail: "+254 700 123 456", key: "phone" },
-              { icon: Mail, label: "Email", detail: "sales@meican.co.ke", key: "email" },
-              { icon: MapPin, label: "Location", detail: "Josh Industrial Estate, Mombasa Road, Athi River", key: "location" }
+              { icon: Mail, label: "Email", detail: "meicanltd@outlook.com", key: "email" },
+              { icon: MapPin, label: "Location", detail: "Mombasa Road, Machakos, 11111, KE", key: "location" }
             ].map((contact, index) => (
               <motion.div
                 key={contact.key}
@@ -482,13 +316,55 @@ export default function App() {
       {/* Footer */}
       <footer className="bg-[#212529] text-white py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-3">
-              <img src={meicanLogo} alt="Meican Limited" className="h-10 w-10 object-contain brightness-0 invert" />
-              <div className="font-semibold">MEICAN LIMITED</div>
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            {/* Company Info */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <img src={meicanLogo} alt="Meican Limited" className="h-10 w-10 object-contain brightness-0 invert" />
+                <div className="font-semibold">MEICAN LIMITED</div>
+              </div>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                A Kenyan registered company specializing in premium building materials and construction solutions. 
+                Authorized distributor for Sika Kenya Limited.
+              </p>
             </div>
+            
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <div className="space-y-2 text-sm">
+                <button 
+                  onClick={() => setShowAboutUs(true)}
+                  className="block text-gray-400 hover:text-white transition-colors"
+                >
+                  About Us
+                </button>
+                <a href="#products" className="block text-gray-400 hover:text-white transition-colors">
+                  Our Products
+                </a>
+                <a href="#contact" className="block text-gray-400 hover:text-white transition-colors">
+                  Contact
+                </a>
+              </div>
+            </div>
+            
+            {/* Contact Info */}
+            <div>
+              <h4 className="font-semibold mb-4">Contact</h4>
+              <div className="space-y-2 text-sm text-gray-400">
+                <p>Mombasa Road, Machakos, 11111, KE</p>
+                <p>+254 700 123 456</p>
+                <p>meicanltd@outlook.com</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-gray-400">
-              © 2026 Meican Limited. All rights reserved.
+              © 2026 Meican Limited. All rights reserved. | Registered Company in Kenya
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500">Reg. No: CPR/2014/XYZ123</span>
             </div>
           </div>
         </div>
@@ -503,10 +379,21 @@ export default function App() {
           scrollbar-width: none;
         }
       `}</style>
-      {/* Product Selection Modal */}
-      {showProductSelection && (
-        <ProductSelection onClose={() => setShowProductSelection(false)} />
-      )}
+      {/* About Us Modal */}
+      <AboutUs 
+        isOpen={showAboutUs} 
+        onClose={() => setShowAboutUs(false)} 
+      />
+
+      {/* Products Page */}
+      <ProductsPage
+        isOpen={showProductsPage}
+        onClose={() => {
+          setShowProductsPage(false);
+          setSelectedProductsCategory(null);
+        }}
+        initialCategory={selectedProductsCategory}
+      />
 
       {/* WhatsApp Float Button */}
       <motion.a
