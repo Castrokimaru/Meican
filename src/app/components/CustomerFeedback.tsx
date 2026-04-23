@@ -263,10 +263,10 @@ export default function CustomerFeedback() {
                         "{t.feedback}"
                       </p>
 
-                      {/* Project tag */}
-                      <div className="text-xs text-[#1E5BA8] font-medium bg-[#1E5BA8]/8 px-3 py-1.5 rounded-lg truncate">
-                        📌 {t.project}
-                      </div>
+                    {/* Project tag */}
+                    <div className="text-xs text-[#1E5BA8] font-medium bg-[#1E5BA8]/8 px-3 py-1.5 rounded-lg truncate">
+                      {t.project}
+                    </div>
 
                       {/* Reviewer */}
                       <div className="flex items-center gap-3">

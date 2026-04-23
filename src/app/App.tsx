@@ -164,18 +164,15 @@ export default function App() {
             <p className="text-lg text-[#6C757D] mb-8 max-w-lg">
               Premium construction solutions from basement to roof. Industrial-grade quality for contractors and DIY enthusiasts.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={() => setShowProductsPage(true)}
-                className="px-8 py-4 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all active:scale-98 shadow-lg shadow-[#1E5BA8]/20 flex items-center justify-center gap-2 group"
-              >
-                Browse Products
-                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="px-8 py-4 bg-white text-[#212529] rounded-xl border-2 border-[#E9ECEF] hover:border-[#1E5BA8] transition-all active:scale-98">
-                Request Quote
-              </button>
-            </div>
+             <div className="flex flex-col sm:flex-row gap-4">
+               <button
+                 onClick={() => setShowProductsPage(true)}
+                 className="px-8 py-4 bg-[#1E5BA8] text-white rounded-xl hover:bg-[#1a4d8f] transition-all active:scale-98 shadow-lg shadow-[#1E5BA8]/20 flex items-center justify-center gap-2 group"
+               >
+                 Browse Products
+                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+               </button>
+             </div>
           </motion.div>
 
           <motion.div

@@ -30,9 +30,7 @@ export default function AboutUs({ isOpen, onClose }: AboutUsProps) {
   ];
 
   const certifications = [
-    { name: 'Registered Company', number: 'No. CPR/2014/XYZ123', authority: 'Registrar of Companies, Kenya' },
-    { name: 'KRA Compliant', number: 'PIN: P051234567A', authority: 'Kenya Revenue Authority' },
-    { name: 'NCA Registered', number: 'NCA/Contractor/2023/001', authority: 'National Construction Authority' }
+    { name: 'Registered Company', number: 'No. CPR/2014/XYZ123', authority: 'Registrar of Companies, Kenya' }
   ];
 
   const values = [
@@ -95,7 +93,7 @@ export default function AboutUs({ isOpen, onClose }: AboutUsProps) {
                 <CheckCircle2 className="w-4 h-4" />
                 <span>Registered Company in Kenya</span>
                 <span className="mx-2">•</span>
-                <span>Since 2014</span>
+                <span>Since 2013</span>
               </div>
             </div>
           </div>
@@ -110,13 +108,13 @@ export default function AboutUs({ isOpen, onClose }: AboutUsProps) {
             </h3>
             <div className="prose prose-sm max-w-none text-[#6C757D] leading-relaxed space-y-4">
               <p>
-                <strong className="text-[#212529]">Meican Limited</strong> is a Kenyan registered company specializing in the supply and distribution of high-quality building materials and construction solutions. Established in 2014, we have grown to become one of Kenya's leading providers of premium construction products, serving contractors, developers, and construction professionals across East Africa.
+                <strong className="text-[#212529]">Meican Limited</strong> is a Kenyan registered company specializing in the supply and distribution of high-quality building materials and construction solutions. Established in 2013, we have grown to become one of Kenya's leading providers of premium construction products, serving contractors, developers, and construction professionals across East Africa.
               </p>
               <p>
                 We are the <strong className="text-[#212529]">authorized distributor</strong> for Sika Kenya Limited, the world-renowned Swiss manufacturer of specialty chemicals for construction and industry. This partnership allows us to bring globally-engineered solutions to local construction projects, ensuring Kenyan builders have access to the same quality standards as international markets.
               </p>
               <p>
-                Our headquarters and main distribution center are located at <strong className="text-[#212529]">Josh Industrial Estate, Mombasa Road, Athi River</strong>, strategically positioned to serve Nairobi and the greater East African region with efficient logistics and timely delivery.
+                Our headquarters and main distribution center are located at <strong className="text-[#212529]">Mombasa Road, Machakos</strong>, strategically positioned to serve Nairobi and the greater East African region with efficient logistics and timely delivery.
               </p>
             </div>
           </section>
@@ -235,8 +233,7 @@ export default function AboutUs({ isOpen, onClose }: AboutUsProps) {
                   <div>
                     <div className="font-medium text-[#212529]">Headquarters</div>
                     <div className="text-sm text-[#6C757D]">
-                      Josh Industrial Estate<br />
-                      Mombasa Road, Athi River<br />
+                      Mombasa Road, Machakos<br />
                       P.O. Box 1234-00204<br />
                       Nairobi, Kenya
                     </div>
@@ -255,7 +252,7 @@ export default function AboutUs({ isOpen, onClose }: AboutUsProps) {
                   <Mail className="w-5 h-5 text-[#1E5BA8]" />
                   <div>
                     <div className="font-medium text-[#212529]">Email</div>
-                    <div className="text-sm text-[#6C757D]">sales@meican.co.ke</div>
+                    <div className="text-sm text-[#6C757D]">meicanltd@outlook.com</div>
                   </div>
                 </div>
               </div>
