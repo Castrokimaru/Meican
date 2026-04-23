@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers, MessageCircle, FileText, Weight, Zap } from "lucide-react";
 import { useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 const meicanLogo = '/assets/meican-logo.png';
 const heroImage = '/assets/hero-image.png';
 import CustomerFeedback from "./components/CustomerFeedback";
@@ -404,6 +405,8 @@ export default function App() {
           Need technical recommendation?
         </span>
       </motion.a>
+
+      <Analytics />
     </div>
   );
 }
