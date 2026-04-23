@@ -3,7 +3,7 @@ import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Gri
 import { useState } from "react";
 import meicanLogo from "../assets/meican-logo.png";
 import heroImage from "../assets/hero-image.png";
-import MarqueeLogos from "./components/MarqueeLogos";
+import CustomerFeedback from "./components/CustomerFeedback";
 import ProductSelection from "./ProductSelection";
 import AboutUs from "./AboutUs";
 import ProductsPage from "./ProductsPage";
@@ -260,8 +260,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* Client Logos Marquee */}
-      <MarqueeLogos />
+      {/* Customer Feedback */}
+      <CustomerFeedback />
 
       {/* Contact Section */}
       <section id="contact" className="py-20 bg-white">
