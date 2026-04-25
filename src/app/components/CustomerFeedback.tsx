@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { motion } from 'motion/react';
 import { Star, ThumbsUp, Eye, MapPin, CheckCircle2, Quote } from 'lucide-react';
 
@@ -158,7 +158,7 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-export default function CustomerFeedback() {
+function CustomerFeedback() {
   const [likedIds, setLikedIds] = useState<Set<number>>(new Set());
   const [likeCounts, setLikeCounts] = useState<Record<number, number>>(
     Object.fromEntries(testimonials.map((t) => [t.id, t.likes]))
@@ -360,3 +360,5 @@ export default function CustomerFeedback() {
     </section>
   );
 }
+
+export default memo(CustomerFeedback);

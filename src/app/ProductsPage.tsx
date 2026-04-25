@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, memo } from 'react';
 import { motion } from 'motion/react';
 import {
   X,
@@ -12,7 +12,6 @@ import {
   Weight,
   ArrowLeft,
   ShoppingCart,
-  FileText,
   Download,
   MapPin
 } from 'lucide-react';
@@ -22,7 +21,7 @@ interface ProductsPageProps {
   onClose: () => void;
 }
 
-export default function ProductsPage({ onClose }: ProductsPageProps) {
+function ProductsPage({ onClose }: ProductsPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -38,8 +37,8 @@ export default function ProductsPage({ onClose }: ProductsPageProps) {
         const cartData = JSON.parse(savedCart);
         const cartMap = new Map(Object.entries(cartData));
         setSelectedProducts(cartMap);
-      } catch (error) {
-        console.error('Failed to load cart from localStorage:', error);
+      } catch {
+        // Silently fail - cart will start empty
       }
     }
   }, []);
@@ -141,7 +140,7 @@ export default function ProductsPage({ onClose }: ProductsPageProps) {
       `Hi, I'm interested in the following products:\n\n${productList}\n\nTotal: KES ${total.toLocaleString()}\n\nCan you provide more information about availability and delivery?`
     );
 
-    window.open(`https://wa.me/254797259150?text=${message}`, '_blank');
+    window.open(`https://wa.me/254797202299?text=${message}`, '_blank');
   };
 
   return (
@@ -364,9 +363,10 @@ export default function ProductsPage({ onClose }: ProductsPageProps) {
                       <div className={`relative bg-[#F8F9FA] flex items-center justify-center ${
                         viewMode === 'list' ? 'w-48 h-48 flex-shrink-0' : 'h-56'
                       }`}>
-                        <img 
-                          src={product.image_url} 
+                        <img
+                          src={product.image_url}
                           alt={product.name}
+                          loading="lazy"
                           className="w-full h-full object-contain p-4"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = '/assets/meican-logo.png';
@@ -374,7 +374,7 @@ export default function ProductsPage({ onClose }: ProductsPageProps) {
                         />
                         {/* Status Badge */}
                         <div className="absolute top-3 right-3">
-                          {product.status_icon === 'droplet' ? (
+                          {product.categoryIcon === 'droplet' ? (
                             <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full flex items-center gap-1">
                               <Droplet className="w-3 h-3" />
                               Waterproof
@@ -427,12 +427,12 @@ export default function ProductsPage({ onClose }: ProductsPageProps) {
 
                         <p className="text-sm text-[#6C757D] mb-3 line-clamp-2">{product.description}</p>
 
-                        {/* Quick Specs */}
-                        {product.specs && (
+                        {/* Product Tags */}
+                        {product.tags && product.tags.length > 0 && (
                           <div className="flex flex-wrap gap-2 mb-3">
-                            {Object.entries(product.specs).slice(0, 2).map(([key, value]) => (
-                              <span key={key} className="text-xs px-2 py-1 bg-[#F8F9FA] rounded text-[#6C757D]">
-                                {value as string}
+                            {product.tags.slice(0, 2).map((tag) => (
+                              <span key={tag} className="text-xs px-2 py-1 bg-[#F8F9FA] rounded text-[#6C757D]">
+                                {tag}
                               </span>
                             ))}
                           </div>
@@ -511,3 +511,5 @@ export default function ProductsPage({ onClose }: ProductsPageProps) {
     </div>
   );
 }
+
+export default memo(ProductsPage);
