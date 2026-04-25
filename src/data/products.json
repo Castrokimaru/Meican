@@ -33,7 +33,7 @@
            "status": "stock",
            "uom": "25 KG",
            "price": 5800.00,
-           "image_url": "/assets/sika Top Seal- 107 comp(A) 5kg.png",
+           "image_url": "/assets/Sikatop 107.png",
            "description": "High-performance cementitious waterproofing sealant",
            "tags": ["exclusive vat"]
          },
@@ -110,7 +110,7 @@
            "status": "stock",
            "uom": "5 KG",
            "price": 1500.00,
-           "image_url": "/assets/Sikatop 107.png",
+           "image_url": "/assets/sika Top Seal- 107 comp(A) 5kg.png",
            "description": "Flexible cementitious waterproofing coating - 5KG size",
            "tags": ["exclusive vat"]
          }
