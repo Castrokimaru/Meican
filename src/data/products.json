@@ -33,7 +33,7 @@
            "status": "stock",
            "uom": "25 KG",
            "price": 5800.00,
-           "image_url": "/assets/Sikatop 107.png",
+           "image_url": "/assets/sika Top Seal- 107 comp(A) 5kg.png",
            "description": "High-performance cementitious waterproofing sealant",
            "tags": ["exclusive vat"]
          },
@@ -44,7 +44,7 @@
            "status": "stock",
            "uom": "25 KG",
            "price": 6000.00,
-           "image_url": "/assets/SikaTop 501.png",
+           "image_url": "/assets/SikaTop seal 501.png",
            "description": "Polymer-modified cementitious waterproofing coating",
            "tags": ["exclusive vat"]
          },
@@ -55,7 +55,7 @@
            "status": "stock",
            "uom": "25 KG",
            "price": 3400.00,
-           "image_url": "/assets/SikaTop seal 105.png",
+           "image_url": "/assets/sika Top Seal- 107 comp(A) 5kg.png",
            "description": "Cementitious waterproofing coating for concrete and masonry",
            "tags": ["exclusive vat"]
          },
@@ -68,6 +68,50 @@
            "price": 8500.00,
            "image_url": "/assets/sikacontrol-110 WT 25 L.png",
            "description": "Waterproofing control admixture for concrete structures",
+           "tags": ["exclusive vat"]
+         },
+         {
+           "id": "sika-control-110-wt-5l",
+           "name": "Sika Control-110 WT",
+           "sku": "CTL1105L",
+           "status": "stock",
+           "uom": "5 L",
+           "price": 2200.00,
+           "image_url": "/assets/sikacontrol-110WT  5L.png",
+           "description": "Waterproofing control admixture for concrete structures - 5L size",
+           "tags": ["exclusive vat"]
+         },
+         {
+           "id": "nicote-cm210",
+           "name": "Nicote CM210",
+           "sku": "NIC210",
+           "status": "stock",
+           "uom": "20 KG",
+           "price": 3200.00,
+           "image_url": "/assets/Nicote CM210 .png",
+           "description": "Cementitious waterproofing membrane for basements and tanks",
+           "tags": ["exclusive vat"]
+         },
+         {
+           "id": "sika-shield",
+           "name": "Sika Shield",
+           "sku": "SHIELD001",
+           "status": "stock",
+           "uom": "5 L",
+           "price": 2800.00,
+           "image_url": "/assets/Sika shield.png",
+           "description": "Protective coating for concrete surfaces against water and chemicals",
+           "tags": ["exclusive vat"]
+         },
+         {
+           "id": "sikatop-107-5kg",
+           "name": "Sika Top 107",
+           "sku": "TOP1075",
+           "status": "stock",
+           "uom": "5 KG",
+           "price": 1500.00,
+           "image_url": "/assets/Sikatop 107.png",
+           "description": "Flexible cementitious waterproofing coating - 5KG size",
            "tags": ["exclusive vat"]
          }
       ]
@@ -90,6 +134,17 @@
            "price": 210.00,
            "image_url": "/assets/Plastocrete N.png",
            "description": "Superplasticizer for high-strength concrete",
+           "tags": ["exclusive vat"]
+         },
+         {
+           "id": "fosroc-solution-5l",
+           "name": "Fosroc Solution",
+           "sku": "FOSROC5L",
+           "status": "stock",
+           "uom": "5 L",
+           "price": 1800.00,
+           "image_url": "/assets/Fosroc solution 5litre.png",
+           "description": "Concrete curing compound and sealing agent for surface protection",
            "tags": ["exclusive vat"]
          }
       ]
@@ -189,6 +244,17 @@
           "price": 2450.00,
           "image_url": "/assets/Sika MonoTop 412 S .png",
           "description": "One-component cementitious repair mortar for vertical and overhead surfaces",
+          "tags": ["exclusive vat"]
+        },
+        {
+          "id": "sika-grout",
+          "name": "Sika Grout",
+          "sku": "GROUT001",
+          "status": "stock",
+          "uom": "25 KG",
+          "price": 1900.00,
+          "image_url": "/assets/SikaGrout.png",
+          "description": "High-strength precision grout for machinery and equipment installation",
           "tags": ["exclusive vat"]
         }
       ]
