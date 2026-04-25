@@ -1,6 +1,6 @@
 import { useState, useEffect, memo } from 'react';
 import { motion } from 'motion/react';
-import { Star, ThumbsUp, Eye, MapPin, CheckCircle2, Quote } from 'lucide-react';
+import { Star, ThumbsUp, Eye, MapPin, CheckCircle2, Quote, Send, X } from 'lucide-react';
 
 interface Testimonial {
   id: number;
@@ -164,11 +164,21 @@ function CustomerFeedback() {
     Object.fromEntries(testimonials.map((t) => [t.id, t.likes]))
   );
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    role: '',
+    company: '',
+    location: '',
+    rating: 5,
+    feedback: '',
+  });
+  const [submitted, setSubmitted] = useState(false);
 
-  // Group testimonials into slides of 3
+  // Group testimonials into slides of 1
   const testimonialSlides = [];
-  for (let i = 0; i < testimonials.length; i += 3) {
-    testimonialSlides.push(testimonials.slice(i, i + 3));
+  for (let i = 0; i < testimonials.length; i += 1) {
+    testimonialSlides.push(testimonials.slice(i, i + 1));
   }
 
   // Auto-slide every 4 seconds
@@ -178,6 +188,17 @@ function CustomerFeedback() {
     }, 4000);
     return () => clearInterval(interval);
   }, [testimonialSlides.length]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // In a real app, send to backend here
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setShowReviewForm(false);
+      setFormData({ name: '', role: '', company: '', location: '', rating: 5, feedback: '' });
+    }, 3000);
+  };
 
   const toggleLike = (id: number) => {
     setLikedIds((prev) => {
@@ -225,15 +246,15 @@ function CustomerFeedback() {
           >
             {testimonialSlides.map((slide, slideIndex) => (
               <div key={slideIndex} className="flex-shrink-0 w-full">
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="max-w-2xl mx-auto">
                   {slide.map((t, index) => (
                     <motion.div
                       key={t.id}
                       initial={{ opacity: 0, y: 30 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.45, delay: (slideIndex * 3 + index) * 0.07 }}
-                      className="bg-white rounded-2xl border border-[#E9ECEF] p-5 flex flex-col gap-4 hover:shadow-lg transition-shadow"
+                      transition={{ duration: 0.45, delay: index * 0.1 }}
+                      className="bg-white rounded-2xl border border-[#E9ECEF] p-8 flex flex-col gap-5 hover:shadow-lg transition-shadow"
                     >
                       {/* Quote icon */}
                       <div className="flex items-start justify-between">
@@ -259,7 +280,7 @@ function CustomerFeedback() {
                       </div>
 
                       {/* Feedback Text */}
-                      <p className="text-sm text-[#6C757D] leading-relaxed flex-1 line-clamp-5">
+                      <p className="text-base text-[#6C757D] leading-relaxed flex-1">
                         "{t.feedback}"
                       </p>
 
@@ -327,6 +348,20 @@ function CustomerFeedback() {
             ))}
           </motion.div>
 
+          {/* Navigation Arrows */}
+          <button
+            onClick={() => setCurrentSlide((prev) => (prev - 1 + testimonialSlides.length) % testimonialSlides.length)}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-[#1E5BA8] hover:bg-[#1E5BA8] hover:text-white transition-colors"
+          >
+            ←
+          </button>
+          <button
+            onClick={() => setCurrentSlide((prev) => (prev + 1) % testimonialSlides.length)}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-[#1E5BA8] hover:bg-[#1E5BA8] hover:text-white transition-colors"
+          >
+            →
+          </button>
+
           {/* Slider Dots */}
           <div className="flex justify-center gap-2 mt-6">
             {testimonialSlides.map((_, index) => (
@@ -341,20 +376,140 @@ function CustomerFeedback() {
           </div>
         </div>
 
-        {/* Bottom CTA */}
+        {/* Leave a Review Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-center mt-12"
+          className="mt-16"
         >
-          <p className="text-[#6C757D] text-sm">
-            Join{' '}
-            <span className="font-semibold text-[#212529]">500+</span>{' '}
-            contractors, engineers and developers across all 47 counties who
-            trust Meican for their construction needs.
-          </p>
+          {!showReviewForm ? (
+            <div className="text-center bg-white rounded-2xl border border-[#E9ECEF] p-8">
+              <p className="text-[#6C757D] mb-4">
+                Have you worked with Meican? Share your experience with others.
+              </p>
+              <button
+                onClick={() => setShowReviewForm(true)}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#1E5BA8] text-white rounded-lg font-semibold hover:bg-[#164785] transition-colors"
+              >
+                <Send className="w-4 h-4" />
+                Write a Review
+              </button>
+            </div>
+          ) : submitted ? (
+            <div className="text-center bg-green-50 rounded-2xl border border-green-200 p-8">
+              <CheckCircle2 className="w-12 h-12 text-green-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-green-800 mb-2">Thank You!</h3>
+              <p className="text-green-700">Your review has been submitted and is pending verification.</p>
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl border border-[#E9ECEF] p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-[#212529]">Write Your Review</h3>
+                <button
+                  onClick={() => setShowReviewForm(false)}
+                  className="p-2 hover:bg-[#F8F9FA] rounded-full transition-colors"
+                >
+                  <X className="w-5 h-5 text-[#6C757D]" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-[#212529] mb-2">Full Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-3 border border-[#E9ECEF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E5BA8]/20 focus:border-[#1E5BA8]"
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-[#212529] mb-2">Company *</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      className="w-full px-4 py-3 border border-[#E9ECEF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E5BA8]/20 focus:border-[#1E5BA8]"
+                      placeholder="Your Company Ltd"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-[#212529] mb-2">Role *</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.role}
+                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                      className="w-full px-4 py-3 border border-[#E9ECEF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E5BA8]/20 focus:border-[#1E5BA8]"
+                      placeholder="Engineer, Contractor, etc."
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-[#212529] mb-2">Location *</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.location}
+                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                      className="w-full px-4 py-3 border border-[#E9ECEF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E5BA8]/20 focus:border-[#1E5BA8]"
+                      placeholder="Nairobi, Mombasa, etc."
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-[#212529] mb-2">Rating</label>
+                  <div className="flex items-center gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setFormData({ ...formData, rating: star })}
+                        className="p-1 hover:scale-110 transition-transform"
+                      >
+                        <Star
+                          className={`w-6 h-6 ${
+                            star <= formData.rating
+                              ? 'text-yellow-400 fill-yellow-400'
+                              : 'text-gray-200 fill-gray-200'
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-[#212529] mb-2">Your Review *</label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={formData.feedback}
+                    onChange={(e) => setFormData({ ...formData, feedback: e.target.value })}
+                    className="w-full px-4 py-3 border border-[#E9ECEF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E5BA8]/20 focus:border-[#1E5BA8] resize-none"
+                    placeholder="Share your experience with Meican products and services..."
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 bg-[#1E5BA8] text-white rounded-lg font-semibold hover:bg-[#164785] transition-colors"
+                >
+                  <Send className="w-4 h-4" />
+                  Submit Review
+                </button>
+              </form>
+            </div>
+          )}
         </motion.div>
       </div>
     </section>

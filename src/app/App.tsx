@@ -265,14 +265,14 @@ function App() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-[#212529] mb-3">Get In Touch</h2>
-            <p className="text-[#6C757D]">Located at Total petrol station Athiriver along Mombasa road</p>
+            <p className="text-[#6C757D]">Located at Total petrol station Athiriver, along Mombasa road</p>
           </motion.div>
 
           <div className="max-w-2xl mx-auto space-y-1">
             {[
-              { icon: Phone, label: "Phone", detail: "0797202299", key: "phone" },
+              { icon: Phone, label: "Phone", detail: "+254797202299", key: "phone" },
               { icon: Mail, label: "Email", detail: "meicanltd@outlook.com", key: "email" },
-              { icon: MapPin, label: "Location", detail: "Total petrol station Athiriver along Mombasa road", key: "location" }
+              { icon: MapPin, label: "Location", detail: "Total petrol station Athiriver, along Mombasa road", key: "location" }
             ].map((contact, index) => (
               <motion.div
                 key={contact.key}
@@ -351,8 +351,8 @@ function App() {
             <div>
               <h4 className="font-semibold mb-4">Contact</h4>
               <div className="space-y-2 text-sm text-gray-400">
-                <p>Total petrol station Athiriver along Mombasa road</p>
-                <p>0797202299</p>
+                <p>Total petrol station Athiriver, along Mombasa road</p>
+                <p>+254797202299</p>
                 <p>meicanltd@outlook.com</p>
               </div>
             </div>

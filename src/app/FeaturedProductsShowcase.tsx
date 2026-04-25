@@ -10,7 +10,7 @@ const applicationShowcases = [
     category: 'Waterproofing',
     categoryIcon: Droplet,
     description: 'Our waterproofing solutions protect buildings from water damage, ensuring long-term durability in Kenya\'s humid and rainy climate. Perfect for foundations, basements, and roofs.',
-    image: 'https://i.pinimg.com/736x/a6/62/d3/a662d362cc95ad95283f1400e19ec03d.jpg',
+    image: '/assets/showcase-waterproofing.jpg',
     imageAlt: 'Waterproofing application on concrete structure'
   },
   {
@@ -19,7 +19,7 @@ const applicationShowcases = [
     category: 'Concrete Admixtures',
     categoryIcon: Grid3x3,
     description: 'Enhance concrete strength and workability with our admixtures, ideal for high-rise buildings, bridges, and infrastructure projects across Kenya.',
-    image: 'https://i.pinimg.com/736x/78/06/48/780648484ed5164fdade2736fe75a936.jpg',
+    image: '/assets/showcase-concrete.jpg',
     imageAlt: 'Concrete mixing with admixtures'
   },
   {
@@ -28,7 +28,7 @@ const applicationShowcases = [
     category: 'Elastic Sealing',
     categoryIcon: Lock,
     description: 'Flexible sealing solutions for expansion joints that withstand movement, temperature changes, and weather, preventing leaks in concrete structures.',
-    image: 'https://i.pinimg.com/1200x/16/ce/9c/16ce9c4933ffd0ac2195d31fa18db5c9.jpg',
+    image: '/assets/showcase-sealing.jpg',
     imageAlt: 'Expansion joint sealing application'
   },
   {
@@ -37,7 +37,7 @@ const applicationShowcases = [
     category: 'Flooring Systems',
     categoryIcon: Layers,
     description: 'Durable, slip-resistant flooring systems for warehouses, factories, and commercial spaces, providing long-lasting performance under heavy use.',
-    image: 'https://i.pinimg.com/736x/f8/8e/b9/f88eb943cfbc3cfd2396216796c30313.jpg',
+    image: '/assets/showcase-flooring.jpg',
     imageAlt: 'Industrial flooring installation'
   }
 ];

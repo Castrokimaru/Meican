@@ -116,7 +116,7 @@ function AboutUs({ isOpen, onClose }: AboutUsProps) {
                 We are the <strong className="text-[#212529]">authorized distributor</strong> for Sika Kenya Limited, the world-renowned Swiss manufacturer of specialty chemicals for construction and industry. This partnership allows us to bring globally-engineered solutions to local construction projects, ensuring Kenyan builders have access to the same quality standards as international markets.
               </p>
               <p>
-                Our headquarters and main distribution center are located at <strong className="text-[#212529]">Total petrol station Athiriver along Mombasa road</strong>, strategically positioned to serve Nairobi and the greater East African region with efficient logistics and timely delivery.
+                Our headquarters and main distribution center are located at <strong className="text-[#212529]">Total petrol station Athiriver, along Mombasa road</strong>, strategically positioned to serve Nairobi and the greater East African region with efficient logistics and timely delivery.
               </p>
             </div>
           </section>
@@ -235,7 +235,7 @@ function AboutUs({ isOpen, onClose }: AboutUsProps) {
                   <div>
                     <div className="font-medium text-[#212529]">Headquarters</div>
                     <div className="text-sm text-[#6C757D]">
-                      Total petrol station Athiriver along Mombasa road<br />
+                      Total petrol station Athiriver, along Mombasa road<br />
                       P.O. Box 1234-00204<br />
                       Nairobi, Kenya
                     </div>
@@ -246,7 +246,7 @@ function AboutUs({ isOpen, onClose }: AboutUsProps) {
                   <Phone className="w-5 h-5 text-[#1E5BA8]" />
                   <div>
                     <div className="font-medium text-[#212529]">Phone</div>
-                    <div className="text-sm text-[#6C757D]">0797202299</div>
+                    <div className="text-sm text-[#6C757D]">+254797202299</div>
                   </div>
                 </div>
                 
