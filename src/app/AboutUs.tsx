@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { motion } from 'motion/react';
 import { 
   Building2, 
@@ -19,7 +20,7 @@ interface AboutUsProps {
   onClose: () => void;
 }
 
-export default function AboutUs({ isOpen, onClose }: AboutUsProps) {
+function AboutUs({ isOpen, onClose }: AboutUsProps) {
   if (!isOpen) return null;
 
   const companyStats = [
@@ -78,9 +79,10 @@ export default function AboutUs({ isOpen, onClose }: AboutUsProps) {
           
           <div className="flex items-center gap-6">
             <div className="w-20 h-20 bg-white rounded-xl p-2 flex items-center justify-center shadow-lg">
-              <img 
-                src={meicanLogo} 
+              <img
+                src={meicanLogo}
                 alt="Meican Limited Logo"
+                loading="lazy"
                 className="w-full h-full object-contain"
               />
             </div>
@@ -311,3 +313,5 @@ export default function AboutUs({ isOpen, onClose }: AboutUsProps) {
     </motion.div>
   );
 }
+
+export default memo(AboutUs);
