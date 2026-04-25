@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
-import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers, MessageCircle, FileText, Weight, Zap } from "lucide-react";
-import { useState } from "react";
+import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers, MessageCircle, FileText, Weight } from "lucide-react";
+import { useState, memo } from "react";
 import { Analytics } from "@vercel/analytics/react";
 const meicanLogo = '/assets/meican-logo.png';
 const heroImage = '/assets/hero-image.png';
@@ -10,9 +10,8 @@ import ProductsPage from "./ProductsPage";
 import FeaturedProductsShowcase from "./FeaturedProductsShowcase";
 import productsData from "../data/products.json";
 
-export default function App() {
+function App() {
   const [hoveredContact, setHoveredContact] = useState<string | null>(null);
-  const [isSending, setIsSending] = useState<boolean>(false);
   const [showAboutUs, setShowAboutUs] = useState<boolean>(false);
   const [showProductsPage, setShowProductsPage] = useState<boolean>(false);
   const [selectedProductsCategory, setSelectedProductsCategory] = useState<string | null>(null);
@@ -185,6 +184,7 @@ export default function App() {
               <img
                 src={heroImage}
                 alt="Construction site"
+                loading="eager"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -376,16 +376,18 @@ export default function App() {
         }
       `}</style>
       {/* About Us Modal */}
-      <AboutUs 
-        isOpen={showAboutUs} 
-        onClose={() => setShowAboutUs(false)} 
-      />
+      {showAboutUs && (
+        <AboutUs
+          isOpen={showAboutUs}
+          onClose={() => setShowAboutUs(false)}
+        />
+      )}
 
 
 
       {/* WhatsApp Float Button */}
       <motion.a
-        href="https://wa.me/254797259150?text=Hi%20Meican%20Limited,%20I%20need%20technical%20recommendation%20for%20my%20construction%20project."
+        href="https://wa.me/254797202299?text=Hi%20Meican%20Limited,%20I%20need%20technical%20recommendation%20for%20my%20construction%20project."
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-xl hover:shadow-2xl transition-all flex items-center gap-3 group"
@@ -404,3 +406,5 @@ export default function App() {
     </div>
   );
 }
+
+export default memo(App);
