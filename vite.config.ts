@@ -19,4 +19,27 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+
+  // Performance optimizations
+  build: {
+    // Use esbuild for minification (faster than terser, built-in)
+    minify: 'esbuild',
+    // Split chunks for better caching
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'motion': ['motion/react'],
+          'lucide': ['lucide-react'],
+        },
+      },
+    },
+    // Reduce chunk size warnings
+    chunkSizeWarningLimit: 600,
+  },
+
+  // Optimize deps for faster dev server startup
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'motion/react', 'lucide-react'],
+  },
 })
