@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight, Droplet, Grid3x3, Lock, Layers } from 'lucide-react';
 
@@ -41,7 +42,7 @@ const applicationShowcases = [
   }
 ];
 
-export default function FeaturedProductsShowcase() {
+function FeaturedProductsShowcase() {
   return (
     <section id="products" className="py-20 bg-[#F8F9FA]">
       <div className="max-w-7xl mx-auto px-6">
@@ -136,6 +137,7 @@ export default function FeaturedProductsShowcase() {
                       <img
                         src={showcase.image}
                         alt={showcase.imageAlt}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = '/assets/meican-logo.png';
@@ -158,3 +160,5 @@ export default function FeaturedProductsShowcase() {
     </section>
   );
 }
+
+export default memo(FeaturedProductsShowcase);
