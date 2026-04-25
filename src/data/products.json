@@ -38,13 +38,13 @@
            "tags": ["exclusive vat"]
          },
         {
-           "id": "sika-top-501",
+            "id": "sika-top-501",
            "name": "Sika Top 501",
            "sku": "TOP501",
            "status": "stock",
            "uom": "25 KG",
            "price": 6000.00,
-           "image_url": "/assets/Sikatop 501 seal25kg.png",
+           "image_url": "/assets/SikaTop 501.png",
            "description": "Polymer-modified cementitious waterproofing coating",
            "tags": ["exclusive vat"]
          },
