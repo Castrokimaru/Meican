@@ -219,7 +219,7 @@ export default function App() {
               {
                 icon: Truck,
                 title: "Automated Delivery",
-                description: "From Machakos to your site. Zone-based pricing calculated automatically at checkout."
+                description: "From our warehouse to your site. Zone-based pricing calculated automatically at checkout."
               },
               {
                 icon: Shield,
@@ -272,7 +272,7 @@ export default function App() {
             {[
               { icon: Phone, label: "Phone", detail: "+254 700 123 456", key: "phone" },
               { icon: Mail, label: "Email", detail: "meicanltd@outlook.com", key: "email" },
-              { icon: MapPin, label: "Location", detail: "Mombasa Road, Machakos, 11111, KE", key: "location" }
+              { icon: MapPin, label: "Location", detail: "Total petrol station mombasa road ,athiriver.", key: "location" }
             ].map((contact, index) => (
               <motion.div
                 key={contact.key}
@@ -351,21 +351,18 @@ export default function App() {
             <div>
               <h4 className="font-semibold mb-4">Contact</h4>
               <div className="space-y-2 text-sm text-gray-400">
-                <p>Mombasa Road, Machakos, 11111, KE</p>
+                <p>Total petrol station mombasa road ,athiriver.</p>
                 <p>+254 700 123 456</p>
                 <p>meicanltd@outlook.com</p>
               </div>
             </div>
           </div>
           
-          <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-gray-400">
-              © 2026 Meican Limited. All rights reserved. | Registered Company in Kenya
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500">Reg. No: CPR/2014/XYZ123</span>
-            </div>
-          </div>
+           <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+             <div className="text-sm text-gray-400">
+               © 2026 Meican Limited. All rights reserved. | Registered Company in Kenya
+             </div>
+           </div>
         </div>
       </footer>
 
