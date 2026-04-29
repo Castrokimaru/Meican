@@ -1,6 +1,7 @@
 import { useState, useEffect, memo } from 'react';
 import { motion } from 'motion/react';
 import { Star, ThumbsUp, Eye, MapPin, CheckCircle2, Quote, Send, X } from 'lucide-react';
+import reviewsData from '../../data/reviews.json';
 
 interface Testimonial {
   id: number;
@@ -17,152 +18,13 @@ interface Testimonial {
   date: string;
   avatarColor: string;
   project: string;
+  verified?: boolean;
+  isUserReview?: boolean;
 }
-
-const testimonials: Testimonial[] = [
-  {
-    id: 1,
-    name: "James Omondi",
-    initials: "JO",
-    role: "Site Foreman",
-    company: "BuildCon Kenya Ltd",
-    location: "Westlands, Nairobi",
-    county: "Nairobi",
-    rating: 5,
-    feedback:
-      "Outstanding waterproofing products! Used Sika solutions on all our retaining walls and the results were flawless. Zero callbacks from the client and the application was straightforward. The Meican team provided excellent technical guidance throughout the project.",
-    likes: 47,
-    views: 312,
-    date: "2 weeks ago",
-    avatarColor: "#1E5BA8",
-    project: "Westlands Commercial Tower",
-  },
-  {
-    id: 2,
-    name: "Sarah Wanjiku",
-    initials: "SW",
-    role: "Structural Engineer",
-    company: "Structura Consulting",
-    location: "Kilimani, Nairobi",
-    county: "Nairobi",
-    rating: 5,
-    feedback:
-      "Exceptional quality that held up perfectly during the heavy rains last season. The Sikatop waterproofing membrane exceeded our tensile strength testing and saved our client significant maintenance costs. Highly recommend to any serious engineer.",
-    likes: 38,
-    views: 224,
-    date: "1 month ago",
-    avatarColor: "#0D7377",
-    project: "Kilimani Residential Complex",
-  },
-  {
-    id: 3,
-    name: "Njuguna Kamau",
-    initials: "NK",
-    role: "Lead Contractor",
-    company: "Mega Structures EA",
-    location: "Athi River, Machakos",
-    county: "Machakos",
-    rating: 5,
-    feedback:
-      "Best value for Kenyan climate conditions. The 4mm thickness provides excellent protection against our tropical rainfall. Delivery was prompt and the Meican team understood local site conditions very well. Will definitely order again.",
-    likes: 61,
-    views: 488,
-    date: "3 weeks ago",
-    avatarColor: "#8B2FC9",
-    project: "Mombasa Road Industrial Park",
-  },
-  {
-    id: 4,
-    name: "Fatuma Hassan",
-    initials: "FH",
-    role: "Project Manager",
-    company: "Coast Builders Ltd",
-    location: "Nyali, Mombasa",
-    county: "Mombasa",
-    rating: 5,
-    feedback:
-      "We've been sourcing Sika products through Meican for over two years. The concrete admixtures have dramatically improved our mix quality in coastal conditions. The salt-air environment demands the best — Meican delivers exactly that.",
-    likes: 29,
-    views: 175,
-    date: "2 months ago",
-    avatarColor: "#C94B4B",
-    project: "Nyali Beachfront Apartments",
-  },
-  {
-    id: 5,
-    name: "Peter Kipkoech",
-    initials: "PK",
-    role: "Civil Engineer",
-    company: "Rift Valley Constructions",
-    location: "Nakuru Town",
-    county: "Nakuru",
-    rating: 5,
-    feedback:
-      "The injection systems worked perfectly for crack repair on our water tower. We had a serious leak and the Meican team recommended the right product and walked us through the procedure. Problem solved in one day — incredible.",
-    likes: 54,
-    views: 396,
-    date: "3 months ago",
-    avatarColor: "#2E7D32",
-    project: "Nakuru Water Tower Rehabilitation",
-  },
-  {
-    id: 6,
-    name: "Diana Achieng",
-    initials: "DA",
-    role: "Architect",
-    company: "Lakeside Design Studio",
-    location: "Kisumu CBD",
-    county: "Kisumu",
-    rating: 5,
-    feedback:
-      "Specified Sikafloor for a large commercial kitchen project and the results were stunning. Seamless, hygienic, and exactly what we needed. The technical data sheets made it easy to specify correctly. Meican's prompt response to our queries was a bonus.",
-    likes: 33,
-    views: 210,
-    date: "1 month ago",
-    avatarColor: "#E65100",
-    project: "Kisumu City Mall Food Court",
-  },
-  {
-    id: 7,
-    name: "Moses Rotich",
-    initials: "MR",
-    role: "Construction Manager",
-    company: "Highlands Developers",
-    location: "Eldoret",
-    county: "Uasin Gishu",
-    rating: 5,
-    feedback:
-      "Ordered tiling products for a 200-unit residential project and every single unit came out perfect. Consistent color, excellent bond strength, and the grout has maintained its appearance even in the wet areas. Meican is our go-to supplier.",
-    likes: 42,
-    views: 287,
-    date: "6 weeks ago",
-    avatarColor: "#1565C0",
-    project: "Eldoret Highlands Estate Phase 2",
-  },
-  {
-    id: 8,
-    name: "Lydia Muthoni",
-    initials: "LM",
-    role: "Quantity Surveyor",
-    company: "Thika Road Contractors",
-    location: "Thika Town",
-    county: "Kiambu",
-    rating: 5,
-    feedback:
-      "The volume pricing from Meican made a significant difference to our project budget. Got bulk discounts on the epoxy flooring system and quality was never compromised. Delivery scheduling was flexible and they always kept us informed.",
-    likes: 26,
-    views: 158,
-    date: "5 weeks ago",
-    avatarColor: "#6A1B9A",
-    project: "Thika EPZ Warehouse Complex",
-  },
-];
 
 function CustomerFeedback() {
   const [likedIds, setLikedIds] = useState<Set<number>>(new Set());
-  const [likeCounts, setLikeCounts] = useState<Record<number, number>>(
-    Object.fromEntries(testimonials.map((t) => [t.id, t.likes]))
-  );
+  const [allReviews, setAllReviews] = useState<Testimonial[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -175,14 +37,41 @@ function CustomerFeedback() {
   });
   const [submitted, setSubmitted] = useState(false);
 
+  // Load reviews from JSON and localStorage on mount
+  useEffect(() => {
+    const defaultReviews = reviewsData.reviews;
+    
+    // Load user-added reviews from localStorage
+    const savedUserReviews = localStorage.getItem('meican-user-reviews');
+    let userReviews: Testimonial[] = [];
+    
+    if (savedUserReviews) {
+      try {
+        const parsed = JSON.parse(savedUserReviews);
+        userReviews = parsed.map((review: Testimonial) => ({
+          ...review,
+          isUserReview: true,
+          verified: false,
+        }));
+      } catch {
+        // Invalid JSON, ignore
+      }
+    }
+    
+    // Combine default and user reviews
+    const combined = [...defaultReviews, ...userReviews];
+    setAllReviews(combined);
+  }, []);
+
   // Group testimonials into slides of 1
   const testimonialSlides = [];
-  for (let i = 0; i < testimonials.length; i += 1) {
-    testimonialSlides.push(testimonials.slice(i, i + 1));
+  for (let i = 0; i < allReviews.length; i += 1) {
+    testimonialSlides.push(allReviews.slice(i, i + 1));
   }
 
   // Auto-slide every 4 seconds
   useEffect(() => {
+    if (testimonialSlides.length === 0) return;
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % testimonialSlides.length);
     }, 4000);
@@ -191,8 +80,43 @@ function CustomerFeedback() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, send to backend here
+    
+    // Generate initials from name
+    const nameParts = formData.name.trim().split(' ');
+    const initials = nameParts.length > 1 
+      ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
+      : formData.name.slice(0, 2).toUpperCase();
+    
+    // Create new review
+    const newReview: Testimonial = {
+      id: Date.now(),
+      name: formData.name,
+      initials,
+      role: formData.role,
+      company: formData.company,
+      location: formData.location,
+      county: '',
+      rating: formData.rating,
+      feedback: formData.feedback,
+      likes: 0,
+      views: 0,
+      date: 'Just now',
+      avatarColor: '#1E5BA8',
+      project: 'New Review',
+      verified: false,
+      isUserReview: true,
+    };
+    
+    // Save to localStorage
+    const existingUserReviews = JSON.parse(localStorage.getItem('meican-user-reviews') || '[]');
+    const updatedUserReviews = [newReview, ...existingUserReviews];
+    localStorage.setItem('meican-user-reviews', JSON.stringify(updatedUserReviews));
+    
+    // Update state
+    setAllReviews(prev => [newReview, ...prev]);
+    setCurrentSlide(0);
     setSubmitted(true);
+    
     setTimeout(() => {
       setSubmitted(false);
       setShowReviewForm(false);
@@ -203,13 +127,25 @@ function CustomerFeedback() {
   const toggleLike = (id: number) => {
     setLikedIds((prev) => {
       const next = new Set(prev);
+      const review = allReviews.find(r => r.id === id);
+      if (!review) return next;
+      
       if (next.has(id)) {
         next.delete(id);
-        setLikeCounts((c) => ({ ...c, [id]: c[id] - 1 }));
+        review.likes = Math.max(0, review.likes - 1);
       } else {
         next.add(id);
-        setLikeCounts((c) => ({ ...c, [id]: c[id] + 1 }));
+        review.likes = review.likes + 1;
       }
+      
+      // If it's a user review, update localStorage
+      if (review.isUserReview) {
+        const userReviews = JSON.parse(localStorage.getItem('meican-user-reviews') || '[]');
+        const updated = userReviews.map((r: Testimonial) => r.id === id ? review : r);
+        localStorage.setItem('meican-user-reviews', JSON.stringify(updated));
+      }
+      
+      setAllReviews(prev => prev.map(r => r.id === id ? review : r));
       return next;
     });
   };
@@ -259,10 +195,12 @@ function CustomerFeedback() {
                       {/* Quote icon */}
                       <div className="flex items-start justify-between">
                         <Quote className="w-8 h-8 text-[#1E5BA8]/20 fill-[#1E5BA8]/10" />
-                        <span className="flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">
-                          <CheckCircle2 className="w-3 h-3" />
-                          Verified
-                        </span>
+                        {t.verified !== false && (
+                          <span className="flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">
+                            <CheckCircle2 className="w-3 h-3" />
+                            Verified
+                          </span>
+                        )}
                       </div>
 
                       {/* Star Rating */}
@@ -328,7 +266,7 @@ function CustomerFeedback() {
                             }`}
                           >
                             <ThumbsUp className="w-3.5 h-3.5" />
-                            <span>{likeCounts[t.id]}</span>
+                            <span>{t.likes}</span>
                           </motion.button>
 
                           {/* Views */}
