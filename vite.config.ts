@@ -5,41 +5,59 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [
-    // The React and Tailwind plugins are both required for Make, even if
-    // Tailwind is not being actively used – do not remove them
     react(),
     tailwindcss(),
   ],
   resolve: {
     alias: {
-      // Alias @ to the src directory
       '@': path.resolve(__dirname, './src'),
     },
   },
 
-  // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
 
   // Performance optimizations
   build: {
-    // Use esbuild for minification (faster than terser, built-in)
     minify: 'esbuild',
-    // Split chunks for better caching
+    cssMinify: true,
+    // Aggressive code splitting
     rollupOptions: {
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'motion': ['motion/react'],
           'lucide': ['lucide-react'],
+          'ui': ['@radix-ui/react-dialog', '@radix-ui/react-slot'],
+        },
+        // Ensure small chunks for better caching
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name || ''
+          if (/\.css$/.test(info)) {
+            return 'assets/css/[name]-[hash][extname]'
+          }
+          if (/\.png$|\.jpg$|\.jpeg$|\.gif$|\.webp$|\.svg$/.test(info)) {
+            return 'assets/images/[name]-[hash][extname]'
+          }
+          return 'assets/[name]-[hash][extname]'
         },
       },
     },
-    // Reduce chunk size warnings
-    chunkSizeWarningLimit: 600,
+    // Target modern browsers for smaller bundles
+    target: 'es2020',
+    chunkSizeWarningLimit: 500,
+    // Generate source maps for debugging (disable in production if needed)
+    sourcemap: false,
   },
 
-  // Optimize deps for faster dev server startup
   optimizeDeps: {
     include: ['react', 'react-dom', 'motion/react', 'lucide-react'],
+    exclude: [],
+  },
+
+  // Development optimizations
+  server: {
+    hmr: true,
   },
 })

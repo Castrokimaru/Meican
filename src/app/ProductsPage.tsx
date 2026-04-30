@@ -1,21 +1,42 @@
-import { useState, useMemo, useEffect, memo } from 'react';
-import { motion } from 'motion/react';
+import { useState, useMemo, useEffect, memo, useCallback } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import {
-  X,
   Search,
   Filter,
   Grid3x3,
   List,
   Package,
-  ChevronRight,
   Droplet,
   Weight,
   ArrowLeft,
   ShoppingCart,
   Download,
-  MapPin
 } from 'lucide-react';
 import productsData from '../data/products.json';
+
+// Virtualized list hook for performance
+const useVirtualizedList = <T,>(items: T[], itemsPerPage: number = 12) => {
+  const [page, setPage] = useState(1);
+  
+  const displayedItems = useMemo(() => {
+    return items.slice(0, page * itemsPerPage);
+  }, [items, page, itemsPerPage]);
+  
+  const hasMore = displayedItems.length < items.length;
+  
+  const loadMore = useCallback(() => {
+    if (hasMore) {
+      setPage(p => p + 1);
+    }
+  }, [hasMore]);
+  
+  // Reset page when items change
+  useEffect(() => {
+    setPage(1);
+  }, [items]);
+  
+  return { displayedItems, hasMore, loadMore };
+};
 
 interface ProductsPageProps {
   onClose: () => void;
@@ -28,6 +49,9 @@ function ProductsPage({ onClose }: ProductsPageProps) {
   const [selectedProducts, setSelectedProducts] = useState<Map<string, number>>(new Map());
   const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name');
   const [showFilters, setShowFilters] = useState(false);
+  
+  // Respect user's reduced motion preference for better performance
+  const prefersReducedMotion = useReducedMotion();
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -95,6 +119,9 @@ function ProductsPage({ onClose }: ProductsPageProps) {
         return [...products].sort((a, b) => a.name.localeCompare(b.name));
     }
   }, [allProducts, selectedCategory, searchQuery, sortBy]);
+  
+  // Use virtualization to only render visible products
+  const { displayedItems, hasMore, loadMore } = useVirtualizedList(filteredProducts, 12);
 
   // Get unique categories
   const categories = useMemo(() => {
@@ -345,16 +372,17 @@ function ProductsPage({ onClose }: ProductsPageProps) {
                   <p className="text-[#6C757D]">Try adjusting your search or filters</p>
                 </div>
               ) : (
+                <>
                 <div className={viewMode === 'grid' 
                   ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-6' 
                   : 'space-y-4'
                 }>
-                  {filteredProducts.map((product, index) => (
+                  {displayedItems.map((product, index) => (
                     <motion.div
                       key={product.id}
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
+                      transition={prefersReducedMotion ? { duration: 0 } : { delay: Math.min(index * 0.03, 0.3), duration: 0.3 }}
                       className={`bg-white rounded-xl border border-[#E9ECEF] overflow-hidden hover:shadow-lg transition-all ${
                         viewMode === 'list' ? 'flex' : ''
                       } ${selectedProducts.has(product.id) ? 'ring-2 ring-[#1E5BA8] border-[#1E5BA8]' : ''}`}
@@ -469,6 +497,19 @@ function ProductsPage({ onClose }: ProductsPageProps) {
                     </motion.div>
                   ))}
                 </div>
+                
+                {/* Load More Button */}
+                {hasMore && (
+                  <div className="mt-8 text-center">
+                    <button
+                      onClick={loadMore}
+                      className="px-6 py-3 bg-[#1E5BA8] text-white rounded-lg hover:bg-[#1a4d8f] transition-colors font-medium"
+                    >
+                      Load More ({filteredProducts.length - displayedItems.length} remaining)
+                    </button>
+                  </div>
+                )}
+                </>
               )}
             </main>
           </div>
@@ -477,9 +518,10 @@ function ProductsPage({ onClose }: ProductsPageProps) {
         {/* Floating Selected Products Bar */}
         {selectedProducts.size > 0 && (
             <motion.div
-              initial={{ y: 100, opacity: 0 }}
+              initial={prefersReducedMotion ? { y: 0, opacity: 1 } : { y: 100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 100, opacity: 0 }}
+              exit={prefersReducedMotion ? { y: 0, opacity: 0 } : { y: 100, opacity: 0 }}
+              transition={prefersReducedMotion ? { duration: 0.15 } : { duration: 0.3 }}
               className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#212529] text-white px-6 py-4 rounded-xl shadow-2xl z-50 flex items-center gap-6"
             >
               <div>

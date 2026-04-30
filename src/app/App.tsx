@@ -1,14 +1,23 @@
 import { motion } from "motion/react";
-import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers, MessageCircle, FileText, Weight } from "lucide-react";
-import { useState, memo } from "react";
+import { Package, Shield, Truck, Phone, Mail, MapPin, ChevronRight, Droplet, Grid3x3, Lock, Layers, MessageCircle, Weight } from "lucide-react";
+import { useState, memo, lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 const meicanLogo = '/assets/meican-logo.png';
 const heroImage = '/assets/hero-image.png';
-import CustomerFeedback from "./components/CustomerFeedback";
-import AboutUs from "./AboutUs";
-import ProductsPage from "./ProductsPage";
-import FeaturedProductsShowcase from "./FeaturedProductsShowcase";
 import productsData from "../data/products.json";
+
+// Lazy load heavy components for code splitting
+const CustomerFeedback = lazy(() => import("./components/CustomerFeedback"));
+const AboutUs = lazy(() => import("./AboutUs"));
+const ProductsPage = lazy(() => import("./ProductsPage"));
+const FeaturedProductsShowcase = lazy(() => import("./FeaturedProductsShowcase"));
+
+// Simple loading fallback
+const PageLoader = () => (
+  <div className="min-h-screen bg-white flex items-center justify-center">
+    <div className="w-12 h-12 border-4 border-[#1E5BA8]/20 border-t-[#1E5BA8] rounded-full animate-spin" />
+  </div>
+);
 
 function App() {
   const [hoveredContact, setHoveredContact] = useState<string | null>(null);
@@ -120,7 +129,11 @@ function App() {
   };
 
   if (showProductsPage) {
-    return <ProductsPage onClose={() => setShowProductsPage(false)} />;
+    return (
+      <Suspense fallback={<PageLoader />}>
+        <ProductsPage onClose={() => setShowProductsPage(false)} />
+      </Suspense>
+    );
   }
 
   return (
@@ -209,7 +222,9 @@ function App() {
       </section>
 
       {/* Featured Products Showcase */}
-      <FeaturedProductsShowcase />
+      <Suspense fallback={<div className="h-96 bg-[#F8F9FA] animate-pulse" />}>
+        <FeaturedProductsShowcase />
+      </Suspense>
 
       {/* Value Proposition */}
       <section className="py-20 bg-[#F8F9FA]">
@@ -252,7 +267,9 @@ function App() {
       </section>
 
       {/* Customer Feedback */}
-      <CustomerFeedback />
+      <Suspense fallback={<div className="h-64 bg-[#F8F9FA] animate-pulse" />}>
+        <CustomerFeedback />
+      </Suspense>
 
       {/* Contact Section */}
       <section id="contact" className="py-20 bg-white">
@@ -377,10 +394,12 @@ function App() {
       `}</style>
       {/* About Us Modal */}
       {showAboutUs && (
-        <AboutUs
-          isOpen={showAboutUs}
-          onClose={() => setShowAboutUs(false)}
-        />
+        <Suspense fallback={null}>
+          <AboutUs
+            isOpen={showAboutUs}
+            onClose={() => setShowAboutUs(false)}
+          />
+        </Suspense>
       )}
 
 
